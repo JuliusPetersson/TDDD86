@@ -103,14 +103,14 @@ void tick(Grid<char>& grid){
 
 
 void animate(Grid<char> grid){
-    //makes prints and pushes the grid forward for 200 generations automatically
+    //makes prints and pushes the grid forward for 100 generations automatically
 
-    for (int i = 0; i < 200; i++){
-        clearConsole();
+    for (int i = 0; i < 100; i++){
         tick(grid);
         printGrid(grid);
+        cout << "jhkassdajkhasdfsjdajkdfskhdfgshj" << endl;
         pause(100);
-
+        clearConsole();
     }
 }
 

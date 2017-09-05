@@ -13,6 +13,7 @@ const int MIDDLE_BOUND = 3;
 const int HIGH_BOUND = 4;
 
 void openFile(fstream& file){
+    //prompts user to enter file path and then tries to open the file.
     string filePath;
 
     cout << "Enter file path" << endl;
@@ -21,6 +22,10 @@ void openFile(fstream& file){
 }
 
 void loadGrid(Grid<char>& grid, fstream& file){
+    /*
+     * takes a grid and an open file
+     *and loads in file data to create grid
+     */
 
     if(file.is_open()){
         int columns, rows;
@@ -46,6 +51,7 @@ void loadGrid(Grid<char>& grid, fstream& file){
 
 
 void printGrid(const Grid<char>& grid) {
+    //prints a valid Grid<char>
     for (int rows = 0; rows < grid.numRows(); rows++){
         for (int cols = 0; cols < grid.numCols(); cols++){
             cout << grid.get(rows, cols);
@@ -55,6 +61,8 @@ void printGrid(const Grid<char>& grid) {
 }
 
 int neighbours(const Grid<char>& grid, int col, int row){
+    //counts the amount of alive neighbours a given square has
+
     int neighbours = 0;
 
     for (int i = row-1; i < row+2; i++){
@@ -71,6 +79,8 @@ int neighbours(const Grid<char>& grid, int col, int row){
 
 
 void tick(Grid<char>& grid){
+    //rolls the grid forward a generation
+
     Grid<char> nextGrid(grid.numRows(), grid.numCols());
 
     for (int y = 0; y < grid.numRows(); y++){
@@ -93,7 +103,9 @@ void tick(Grid<char>& grid){
 
 
 void animate(Grid<char> grid){
-    for (int i = 0; i < 300; i++){
+    //makes prints and pushes the grid forward for 200 generations automatically
+
+    for (int i = 0; i < 200; i++){
         clearConsole();
         tick(grid);
         printGrid(grid);
@@ -103,7 +115,13 @@ void animate(Grid<char> grid){
 }
 
 void gameLoop(Grid<char>& grid){
-
+    /*
+     * main game loop.
+     * lets the player choose between three options by entering either a,t or q
+     * a - animate the given grid.
+     * t - tick the grid forward one generation.
+     * q - quit the program.
+     */
 
     bool quit=false;
 
@@ -136,6 +154,7 @@ int main() {
         openFile(gridFile);
         loadGrid(grid, gridFile);
     }
+
     printGrid(grid);  
     gameLoop(grid);
 

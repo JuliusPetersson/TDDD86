@@ -3,8 +3,7 @@ TEMPLATE = app
 CONFIG += console
 CONFIG += no_include_pwd
 
-SOURCES = $$PWD/src/*.cpp \
-    src/test.cpp
+SOURCES = $$PWD/src/*.cpp
 #SOURCES += $$PWD/lib/*.cpp
 HEADERS = $$PWD/src/*.h
 HEADERS += $$PWD/lib/*.h

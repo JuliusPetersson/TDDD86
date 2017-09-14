@@ -19,15 +19,18 @@ void generateDictionary(set<string>& dictionary){
 
 }
 
+void getWordsWLength(unsigned int length,const set<string>& dictionary, set<string>& result){
+    for(string word : dictionary){
+        if (word.length() == length)result.insert(word);
+    }
+}
+
 int main() {
     cout << "Welcome to Hangman." << endl;
 
     set<string> dictionary;
     generateDictionary(dictionary);
 
-    for (vector<string>::iterator it = neighbours.begin(); it < neighbours.end(); it++){
-
-    }
 
     // TODO: Finish the program!
 

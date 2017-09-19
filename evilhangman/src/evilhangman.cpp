@@ -6,7 +6,7 @@
 #include <algorithm>
 #include <set>
 
-#define LIFE 10
+#define LIFE 50
 
 using namespace std;
 
@@ -33,15 +33,14 @@ void getWordsByLength(unsigned int length,const set<string>& dictionary, set<str
     }
 }
 
-bool sameFamily(string word1, string word2, char* letters, int guesses){
-    
+bool sameFamily(const string word1,const string word2,const char* letters,const int guesses){    
     if (word1.length() ==  word2.length()){
         for(int i = 0; i < word1.length(); i++){
-	    for (int i = 0; i < guesses; i++){
-		char letter = letters[i];
+	    for (int j = 0; j < guesses; j++){
+		char letter = letters[j];
 		    
-		if (word1[i] == letter || (word2[i] == letter)){
-		    if (!(word2[i] == letter && word1[i] == letter)){
+		if ((word1[i] == letter) || (word2[i] == letter)){
+		    if (!(word2[i] == word1[i])){
 			return false;
 		    }
 		}
@@ -55,12 +54,12 @@ bool sameFamily(string word1, string word2, char* letters, int guesses){
     }
 }
 
-void sortByFamily(char* guesses, set<string>& words, set<set<string> >& families, int amountGuesses){
-
+//här är fel
+void sortByFamily(char* guesses, set<string> words, set<set<string> >& families, int amountGuesses){
+    families.clear();
     while (!words.empty()) {
-        set<string> family;
+	set<string> family;
 	const string testWord = *words.begin();
-
         family.insert(testWord);
         words.erase(testWord);
 	
@@ -70,7 +69,7 @@ void sortByFamily(char* guesses, set<string>& words, set<set<string> >& families
 		words.erase(*word);
 	    }
         }
-
+	
 	families.insert(family);
     }
 }
@@ -78,16 +77,13 @@ void sortByFamily(char* guesses, set<string>& words, set<set<string> >& families
 void longestFamily(set<string>& words, const set<set<string> > families){
     set<string> longest;
     
-    for (set<set<string> >::iterator family = families.begin();family != families.end(); family++){
-	  cout << sizeof(*family) << endl;
-	if(longest.size() < (*family).size()){
-	    longest = *family;
+    for (set<string> family : families){
+	
+	if(longest.size() < family.size()){
+	    longest = family;
 	}
     }
-    cout << sizeof(longest) << endl;
     words = longest;
-    cout << sizeof(words) << endl;
-
 }
 
 void printWordByGuesses(char* guessedLetters, string word, int guesses){
@@ -108,6 +104,26 @@ void printWordByGuesses(char* guessedLetters, string word, int guesses){
     cout << endl;
 }
 
+void familyInfo(set<string> family){
+    cout << "len: " << family.size() << "\n{";
+
+    int i = 0;
+    for (string word : family){
+	cout << word << ", ";
+	i++;
+	if (i%10 == 0){
+	    cout << "\n";
+	}
+    }
+    cout << "}" << endl;   
+}
+
+void familiesInfo(set<set<string> > families){
+    for (set<string> fam : families){
+	familyInfo(fam);
+    }
+}
+
 int main() {
     char guessedLetters[LIFE];
     int guesses = 0;
@@ -116,32 +132,69 @@ int main() {
     set<set<string> > families;
     int length;
 
-    generateDictionary(dictionary);
+    set<string> s1,s2,s3,s4,s5,s6,s7,s8, w;
+    set<set<string> > f1;
 
+    /*
+    s1.insert("a");
+    s2.insert("a");
+    s2.insert("b");
+    s3.insert("a");
+    s3.insert("b");
+    s3.insert("c");
+    s4.insert("a");
+    s4.insert("b");
+    s4.insert("c");
+    s4.insert("d");
+
+    f1.insert(s1);
+    f1.insert(s2);
+    f1.insert(s3);
+
+    familyInfo(w);
+    
+    longestFamily(w, f1);
+
+    familyInfo(w);
+    
+    f1.insert(s4);
+    
+    */
+    
+    generateDictionary(dictionary);
+    
     cout << "Welcome to Hangman." << endl;
     cout << "please enter length of word." << endl;
     
     
-      cin >> length;
+    cin >> length;
 
     getWordsByLength(length, dictionary, words);
     
     while(guesses < LIFE)
     {
-	cout << sizeof(words) << endl;
+	
+	cout << words.size() << endl;
 	char guess;
-	cout << "Enter a Letter"<<endl;
-	cin >> guess;
+	bool sepGuess = false;
+	while (!sepGuess){
+	    cout << "Enter a Letter"<<endl;
+	    cin >> guess;
+
+	    sepGuess = true;
+	    for(int i = 0; i < guesses; i++){
+		sepGuess = !(guessedLetters[i] == guess);
+	    }
+	}
 	guessedLetters[guesses] = guess;
 	
 	guesses++;
 	
 	sortByFamily(guessedLetters, words, families, guesses);
 	longestFamily(words, families);
-	printWordByGuesses(guessedLetters, *words.begin(), guesses);
-	cout << sizeof(words) << endl;
+	printWordByGuesses(guessedLetters, *(words.begin()), guesses);
 	
-    }
+      }
     
     return 0;
 }

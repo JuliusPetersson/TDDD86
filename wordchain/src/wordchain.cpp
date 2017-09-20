@@ -5,6 +5,8 @@
 #include <stack>
 #include <algorithm>
 #include <set>
+
+
 using namespace std;
 
 const string ALPHABET  = "abcdefghijklmnopqrstuvwxyz";
@@ -63,8 +65,6 @@ int main() {
             string stringChain;
             int sizeWorkingStack = workingStack.size();
             for (int i = 0; i < sizeWorkingStack; i++){
-                //skapa variabel eller sen fylla eller direkt och då skicka pekare?
-                // fråga om main delas?!
                 stringChain = workingStack.top() + " " + stringChain;
                 workingStack.pop();
             }

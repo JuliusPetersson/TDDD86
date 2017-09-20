@@ -5,6 +5,8 @@
 #include <stack>
 #include <algorithm>
 #include <set>
+
+
 using namespace std;
 
 const string ALPHABET  = "abcdefghijklmnopqrstuvwxyz";
@@ -51,30 +53,40 @@ int main() {
     queue<stack<string>> que;
     stack<string> workingStack;
     set<string> usedWords;
+
     workingStack.push(word1);
     que.push(workingStack);
 
     while (!que.empty()){
-        que.front();
+        workingStack = que.front();
         que.pop();
-        if (workingStack.top()==word2){
-            workingStack.push(word2);
+
+        if (workingStack.top() == word2){
+            string stringChain;
+            int sizeWorkingStack = workingStack.size();
+            for (int i = 0; i < sizeWorkingStack; i++){
+                stringChain = workingStack.top() + " " + stringChain;
+                workingStack.pop();
+            }
+            cout << stringChain << endl;
+
+            break;
+
          } else {
-            vector<string> neighbours = getNeighbours(word1);
-            vector<string> wordstack;
+
+            vector<string> neighbours = getNeighbours(workingStack.top());
 
                 for (vector<string>::iterator it = neighbours.begin(); it < neighbours.end(); it++){
 
-                    if ((dictionary.count(*it)) && !(find(usedWords.begin(), usedWords.end(), *it) != usedWords.end())){
-                        wordstack.push_back(*it);
+                    if ((dictionary.count(*it)) && !(find(usedWords.begin(), usedWords.end(), *it) != usedWords.end())){                        
+                        stack<string> wordStack = workingStack;
+                        wordStack.push(*it);
+                        que.push(wordStack);
                         usedWords.insert(*it);
+
                     }
+                }
 
-            }
-            for (unsigned int i=0 ; i<wordstack.size();i++){
-                cout << wordstack.at(i) << endl;
-
-            }
 
             }
         }

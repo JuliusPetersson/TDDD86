@@ -11,7 +11,8 @@
 using namespace std;
 
 const string ALPHABET  = "abcdefghijklmnopqrstuvwxyz";
-
+/*Loads dictionary words from a file and puts them into the dictionary
+ */
 void generateDictionary(set<string>& dictionary){
     string dictWord;
     fstream file;
@@ -27,12 +28,16 @@ void generateDictionary(set<string>& dictionary){
 
 }
 
-void getWordsByLength(unsigned int length,const set<string>& dictionary, set<string>& result){
+/*puts words from the dictionary into wordList that match the given length
+ */
+void getWordsByLength(unsigned int length,const set<string>& dictionary, set<string>& wordList){
     for(string word : dictionary){
-        if (word.length() == length)result.insert(word);
+        if (word.length() == length)wordList.insert(word);
     }
 }
 
+/*checks if two words are of the same family given an array of guessed letters
+ */
 bool sameFamily(const string word1,const string word2,const char* letters,const int guesses){    
     if (word1.length() ==  word2.length()){
         for(int i = 0; i < word1.length(); i++){
@@ -54,8 +59,9 @@ bool sameFamily(const string word1,const string word2,const char* letters,const 
     }
 }
 
-//här är fel
-void sortByFamily(char* guesses, set<string> words, set<set<string> >& families, int amountGuesses){
+/*given a set of words and an array of letter guesses sorts the words into a set of word families 
+ */
+void sortByFamily(char* guesses, const set<string> words, set<set<string> >& families, int amountGuesses){
     families.clear();
     while (!words.empty()) {
 	set<string> family;
@@ -74,6 +80,9 @@ void sortByFamily(char* guesses, set<string> words, set<set<string> >& families,
     }
 }
 
+
+/*sets the words set to the longest word family in the families set
+ */
 void longestFamily(set<string>& words, const set<set<string> > families){
     set<string> longest;
     
@@ -86,6 +95,8 @@ void longestFamily(set<string>& words, const set<set<string> > families){
     words = longest;
 }
 
+/*prints out only the correct guessed letters in a word
+ */
 void printWordByGuesses(char* guessedLetters, string word, int guesses){
     for (char wletter : word){
 	bool view = false;
@@ -104,6 +115,8 @@ void printWordByGuesses(char* guessedLetters, string word, int guesses){
     cout << endl;
 }
 
+/*debug function that prints out information about a given word family
+ */
 void familyInfo(set<string> family){
     cout << "len: " << family.size() << "\n{";
 
@@ -118,6 +131,8 @@ void familyInfo(set<string> family){
     cout << "}" << endl;   
 }
 
+/*prints all the families in a set
+ */
 void familiesInfo(set<set<string> > families){
     for (set<string> fam : families){
 	familyInfo(fam);
@@ -134,33 +149,6 @@ int main() {
 
     set<string> s1,s2,s3,s4,s5,s6,s7,s8, w;
     set<set<string> > f1;
-
-    /*
-    s1.insert("a");
-    s2.insert("a");
-    s2.insert("b");
-    s3.insert("a");
-    s3.insert("b");
-    s3.insert("c");
-    s4.insert("a");
-    s4.insert("b");
-    s4.insert("c");
-    s4.insert("d");
-
-    f1.insert(s1);
-    f1.insert(s2);
-    f1.insert(s3);
-
-    familyInfo(w);
-    
-    longestFamily(w, f1);
-
-    familyInfo(w);
-    
-    f1.insert(s4);
-    
-    */
-    
     generateDictionary(dictionary);
     
     cout << "Welcome to Hangman." << endl;

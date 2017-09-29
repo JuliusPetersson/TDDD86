@@ -11,7 +11,9 @@
 using namespace std;
 
 const string ALPHABET  = "abcdefghijklmnopqrstuvwxyz";
-/*Loads dictionary words from a file and puts them into the dictionary
+
+/*
+  get words from dictionary
  */
 void generateDictionary(set<string>& dictionary){
     string dictWord;
@@ -28,7 +30,8 @@ void generateDictionary(set<string>& dictionary){
 
 }
 
-/*puts words from the dictionary into wordList that match the given length
+/*
+  puts words from the dictionary into wordList that match the given length
  */
 void getWordsByLength(unsigned int length,const set<string>& dictionary, set<string>& wordList){
     for(string word : dictionary){
@@ -36,7 +39,8 @@ void getWordsByLength(unsigned int length,const set<string>& dictionary, set<str
     }
 }
 
-/*checks if two words are of the same family given an array of guessed letters
+/*
+  checks if two words are of the same family given an array of guessed letters
  */
 bool sameFamily(const string word1,const string word2,const char letter){    
     if (word1.length() ==  word2.length()){
@@ -56,7 +60,8 @@ bool sameFamily(const string word1,const string word2,const char letter){
     }
 }
 
-/*given a set of words and an array of letter guesses sorts the words into a set of word families 
+/*
+  given a set of words and an array of letter guesses sorts the words into a set of word families 
  */
 void sortByFamily(char guess, set<string> words, set<set<string> >& families){
     families.clear();
@@ -80,7 +85,8 @@ void sortByFamily(char guess, set<string> words, set<set<string> >& families){
 
 
 
-/*prints out only the correct guessed letters in a word
+/*
+  prints out only the correct guessed letters in a word
  */
 void printWordByGuesses(char* guessedLetters, string word, int guesses){
     for (char wletter : word){
@@ -100,7 +106,8 @@ void printWordByGuesses(char* guessedLetters, string word, int guesses){
     cout << endl;
 }
 
-/*debug function that prints out information about a given word family
+/*
+  debug function that prints out information about a given word family
  */
 void familyInfo(set<string> family){
     cout << "len: " << family.size() << "\n{";
@@ -116,7 +123,8 @@ void familyInfo(set<string> family){
     cout << "}" << endl;   
 }
 
-/*prints all the families in a set
+/*
+  prints all the families in a set
  */
 void familiesInfo(set<set<string> > families){
     for (set<string> fam : families){
@@ -124,7 +132,8 @@ void familiesInfo(set<set<string> > families){
     }
 }
 
-/*sets the words set to the longest word family in the families set
+/*
+  sets the words set to the longest word family in the families set
  */
 void longestFamily(set<string>& words, const set<set<string> > families){
     set<string> longest;
@@ -139,6 +148,9 @@ void longestFamily(set<string>& words, const set<set<string> > families){
     words = longest;
 }
 
+/*
+  checks if a given char is in a string 
+ */
 bool charInWord(const string word, char letter){
     bool match = false;
 
@@ -165,6 +177,10 @@ bool getNonMatch(char guess, const set<set<string> > families, set<string>& word
     return false;
 }
 
+
+/*
+  
+ */
 bool wholeMatch(string word, char* guessedLetters, int guesses){
     bool match = true;
     char guess;

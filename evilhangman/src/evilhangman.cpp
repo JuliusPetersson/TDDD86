@@ -20,12 +20,12 @@ void generateDictionary(set<string>& dictionary){
     fstream file;
     file.open("dictionary.txt");
     if (file.is_open()){
-	while (getline(file, dictWord)){
-	    dictionary.insert(dictWord);
-	}
+        while (getline(file, dictWord)){
+            dictionary.insert(dictWord);
+        }
     }
     else{
-	cout << "file not opened" << endl;
+        cout << "file not opened" << endl;
     }
 
 }
@@ -44,13 +44,13 @@ void getWordsByLength(unsigned int length,const set<string>& dictionary, set<str
  */
 bool sameFamily(const string word1,const string word2,const char letter){    
     if (word1.length() ==  word2.length()){
-        for(int i = 0; i < word1.length(); i++){
-	    if ((word1[i] == letter) || (word2[i] == letter)){
-	        if (!(word2[i] == word1[i])){
-		    return false;
-	        }
-		
-	    }
+        for(unsigned int i = 0; i < word1.length(); i++){
+            if ((word1[i] == letter) || (word2[i] == letter)){
+                if (!(word2[i] == word1[i])){
+                    return false;
+                }
+
+            }
         }
 
         return true;
@@ -61,25 +61,30 @@ bool sameFamily(const string word1,const string word2,const char letter){
 }
 
 /*
-  given a set of words and an array of letter guesses sorts the words into a set of word families 
+  given a set of words and an array of letter guesses sorts the words into a set of word families
  */
 void sortByFamily(char guess, set<string> words, set<set<string> >& families){
     families.clear();
     while (!words.empty()) {
-	set<string> family;
-	const string testWord = *words.begin();
+        set<string> family;
+        const string testWord = *words.begin();
         family.insert(testWord);
-	 words.erase(testWord);
-	
+        words.erase(testWord);
+
         for(set<string>::iterator word = words.begin();word != words.end(); word++){
-	    if (sameFamily(testWord, *word, guess)){
-		family.insert(*word);
-		words.erase(*word);
-	    }
+            if (sameFamily(testWord, *word, guess)){
+                family.insert(*word);
+                words.erase(*word);
+            }
         }
-	
-	families.insert(family);
+
+        families.insert(family);
     }
+
+//    map<string, set<words>> result;
+//    for (x : words) {
+//        result[family(x, gues)].insert(x);
+//    }
 }
 
 
@@ -90,18 +95,18 @@ void sortByFamily(char guess, set<string> words, set<set<string> >& families){
  */
 void printWordByGuesses(char* guessedLetters, string word, int guesses){
     for (char wletter : word){
-	bool view = false;
-	for (int i = 0; i < guesses && !view; i++){
-	    view = wletter == guessedLetters[i];
-	}
-	
-	if (view){
-	    cout << wletter << " ";
-	}
-	else{
-	    cout << "_ ";
-	}
-	
+        bool view = false;
+        for (int i = 0; i < guesses && !view; i++){
+            view = wletter == guessedLetters[i];
+        }
+
+        if (view){
+            cout << wletter << " ";
+        }
+        else{
+            cout << "_ ";
+        }
+
     }
     cout << endl;
 }
@@ -114,13 +119,13 @@ void familyInfo(set<string> family){
 
     int i = 0;
     for (string word : family){
-	cout << word << ", ";
-	i++;
-	if (i%10 == 0){
-	    cout << "\n";
-	}
+        cout << word << ", ";
+        i++;
+        if (i%10 == 0){
+            cout << "\n";
+        }
     }
-    cout << "}" << endl;   
+    cout << "}" << endl;
 }
 
 /*
@@ -139,26 +144,40 @@ void longestFamily(set<string>& words, const set<set<string> > families){
     set<string> longest;
     
     for (set<string> family : families){
-	
-	if(longest.size() < family.size()){
-	   
-	    longest = family;
-	}
+
+        if(longest.size() < family.size()){
+
+            longest = family;
+        }
     }
     words = longest;
 }
 
 /*
-  checks if a given char is in a string 
+  checks if a given char is in a string
  */
 bool charInWord(const string word, char letter){
     bool match = false;
 
     for (char wLetter : word){
-	match = match || (wLetter == letter);
+        match = match || (wLetter == letter);
     }
 
     return match;
+}
+
+/*
+   Takes a word and the letter and gives back how many occuerences of the letter the word include
+ */
+int occurencesInWord(const string word, char letter){
+    int occurences = 0;
+    for (char wLetter : word){
+        if(wLetter == letter){
+            occurences++;
+        }
+    }
+
+    return occurences;
 }
 
 /*
@@ -168,13 +187,25 @@ bool charInWord(const string word, char letter){
  */
 bool getNonMatch(char guess, const set<set<string> > families, set<string>& words){
     for (set<string> family : families){
-	
-	if(charInWord(*family.begin(), guess)){
-	    words = *families.begin();
-	    return true;
-	}
+
+        if(charInWord(*family.begin(), guess)){
+            words = *families.begin();
+            return true;
+        }
     }
     return false;
+}
+
+void getLeastMatch (char guess, const set<set<string>>families,set<string>& words){
+    set<string> tempwords{*families.begin()};
+
+    for (set<string> family : families){
+        if((occurencesInWord(*family.begin(),guess)) < occurencesInWord(*tempwords.begin(),guess)){
+            tempwords = family;
+        }
+
+    }
+    words = tempwords;
 }
 
 
@@ -186,12 +217,12 @@ bool wholeMatch(string word, char* guessedLetters, int guesses){
     char guess;
     
     for (char letter : word){
-	bool semiMatch = false;
-	for (int i = 0; i < guesses; i++){
-	    guess = guessedLetters[i];
-	    semiMatch = semiMatch || (letter == guess);
-	}
-	match = match && semiMatch;
+        bool semiMatch = false;
+        for (int i = 0; i < guesses; i++){
+            guess = guessedLetters[i];
+            semiMatch = semiMatch || (letter == guess);
+        }
+        match = match && semiMatch;
     }
 
     return match;
@@ -201,8 +232,8 @@ bool getYesNo(){
     string answ;
 
     while(answ != "yes" && answ != "no"){
-	cin >> answ;
-	if(answ != "yes" && answ != "no")cout << "invalid input, either say yes or no." << endl;
+        cin >> answ;
+        if(answ != "yes" && answ != "no")cout << "invalid input, either say yes or no." << endl;
     }
 
     return answ == "yes";
@@ -214,29 +245,29 @@ char getLetter(const char* guessedLetters, int guesses){
     bool new_letter = false;
     
     while(!new_letter){
-	
-	cout << "Enter a Letter"<<endl;
-	try {
-	    cin >> guess;
-	    
-	    new_letter = true;
-	    for(int i = 0; i < guesses; i++){
-		new_letter = new_letter && !(guessedLetters[i] == guess);
-	    }
-	    if (!new_letter)cout << "already guessed " << "\""<< guess << "\"" << endl;
-	       
 
-	    if (new_letter){
-		new_letter = false;
-		for (char alph_letter : ALPHABET){
-		    new_letter = new_letter || guess == alph_letter;
-		}
-		if (!new_letter) cout << "\"" << guess << "\" " << "is not in alphabet" << endl;
-	    }
-	}
-	catch(...){
-	    cout << "invalid input"<< endl;
-	}
+        cout << "Enter a Letter"<<endl;
+        try {
+            cin >> guess;
+
+            new_letter = true;
+            for(int i = 0; i < guesses; i++){
+                new_letter = new_letter && !(guessedLetters[i] == guess);
+            }
+            if (!new_letter)cout << "already guessed " << "\""<< guess << "\"" << endl;
+
+
+            if (new_letter){
+                new_letter = false;
+                for (char alph_letter : ALPHABET){
+                    new_letter = new_letter || guess == alph_letter;
+                }
+                if (!new_letter) cout << "\"" << guess << "\" " << "is not in alphabet" << endl;
+            }
+        }
+        catch(...){
+            cout << "invalid input"<< endl;
+        }
     }
     return guess;
 }
@@ -246,21 +277,21 @@ int getInt(int bot, int top){
     int nr;
     
     while (!correct_input){
-	cin >> nr;
-	
-	correct_input = !cin.fail();
-	if (!correct_input) {
-	    cout << "Invalid input"  << endl;
-	    cin.clear();
-	    cin.ignore(numeric_limits<streamsize>::max(), '\n');
-	    
-	}
+        cin >> nr;
 
-	correct_input = bot < nr && nr < top;
+        correct_input = !cin.fail();
+        if (!correct_input) {
+            cout << "Invalid input"  << endl;
+            cin.clear();
+            cin.ignore(numeric_limits<streamsize>::max(), '\n');
 
-	if (!correct_input){
-	    cout << "Number not in span from " << bot << " to " << top << ". Enter a new nr." << endl;
-	}
+        }
+
+        correct_input = bot < nr && nr < top;
+
+        if (!correct_input){
+            cout << "Number not in span from " << bot << " to " << top << ". Enter a new nr." << endl;
+        }
     }
     
     return nr;
@@ -270,15 +301,15 @@ int getWordLength(){
     bool correct_input = false;
     int length;
     while (!correct_input){
-	cin >> length;
-	
-	correct_input = !cin.fail();
-	if (!correct_input) {
-	    cout << "Invalid input"  << endl;
-	    cin.clear();
-	    cin.ignore(numeric_limits<streamsize>::max(), '\n');
-	    
-	}
+        cin >> length;
+
+        correct_input = !cin.fail();
+        if (!correct_input) {
+            cout << "Invalid input"  << endl;
+            cin.clear();
+            cin.ignore(numeric_limits<streamsize>::max(), '\n');
+
+        }
     }
 
     return length;
@@ -287,6 +318,7 @@ int getWordLength(){
 
 int main() {
     char guessedLetters[LIFE];
+    //std::array<char, LIFE> guessedLetters;
     char guess;
     int guesses = 0;
     int life = 0;
@@ -296,19 +328,17 @@ int main() {
     int length;
     bool victory = false;
     bool viewWords;
-    set<string> s1,s2,s3,s4,s5,s6,s7,s8, w;
-    set<set<string> > f1;
 
     generateDictionary(dictionary);
     
     cout << "Welcome to Hangman." << endl;
     cout << "please enter length of word." << endl;
     while (words.size() == 0){
-	length = getWordLength();
-	getWordsByLength(length, dictionary, words);
-	if(words.size() == 0){
-	    cout << "there where no letters of length " << length << endl;
-	}
+        length = getWordLength();
+        getWordsByLength(length, dictionary, words);
+        if(words.size() == 0){
+            cout << "there where no letters of length " << length << endl;
+        }
     }
 
     cout << "You wanna view the words left? yes/no" << endl;
@@ -321,35 +351,33 @@ int main() {
     
     while(life > 0 && !victory)
     {
-	if (viewWords)familyInfo(words);
-	cout <<"\n--------------------------\n\nLife left " << life << "\n";
+        if (viewWords)familyInfo(words);
+        cout <<"\n--------------------------\n\nLife left " << life << "\n";
         guess = getLetter(guessedLetters, guesses);
         guessedLetters[guesses] = guess;
         guesses++;
-	sortByFamily(guess, words, families);
-	
-	if (life == 1){
-	    if (!(getNonMatch(guess, families, words))){
-		longestFamily(words, families);	
-	    }
-	}
-	else{
-	    longestFamily(words, families);
-	}
+        sortByFamily(guess, words, families);
 
-	if (!(charInWord(*words.begin(), guess))){
-	    life--;
-	}
+        if (life == 1){
+            getLeastMatch(guess,families,words);
+        }
+        else{
+            longestFamily(words, families);
+        }
 
-	printWordByGuesses(guessedLetters, *(words.begin()), guesses);
-	victory = wholeMatch(*words.begin(), guessedLetters, guesses);
+        if (!(charInWord(*words.begin(), guess))){
+            life--;
+        }
+
+        printWordByGuesses(guessedLetters, *(words.begin()), guesses);
+        victory = wholeMatch(*words.begin(), guessedLetters, guesses);
     }
 
     if(victory){
-	cout << "Congratulations, you won!" << endl;
+        cout << "Congratulations, you won!" << endl;
     }
     else{
-	cout << "You lost, try again!" << endl;
+        cout << "You lost, try again!" << endl;
     }
     
     return 0;

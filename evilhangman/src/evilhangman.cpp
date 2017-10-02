@@ -42,7 +42,7 @@ void getWordsByLength(unsigned int length,const set<string>& dictionary, set<str
 /*
   checks if two words are of the same family given an array of guessed letters
  */
-bool sameFamily(const string word1,const string word2,const char letter){    
+bool sameFamily(const string & word1,const string & word2,const char letter){
     if (word1.length() ==  word2.length()){
         for(unsigned int i = 0; i < word1.length(); i++){
             if ((word1[i] == letter) || (word2[i] == letter)){
@@ -80,11 +80,6 @@ void sortByFamily(char guess, set<string> words, set<set<string> >& families){
 
         families.insert(family);
     }
-
-//    map<string, set<words>> result;
-//    for (x : words) {
-//        result[family(x, gues)].insert(x);
-//    }
 }
 
 
@@ -93,7 +88,7 @@ void sortByFamily(char guess, set<string> words, set<set<string> >& families){
 /*
   prints out only the correct guessed letters in a word
  */
-void printWordByGuesses(char* guessedLetters, string word, int guesses){
+void printWordByGuesses(char* guessedLetters, const string& word, int guesses){
     for (char wletter : word){
         bool view = false;
         for (int i = 0; i < guesses && !view; i++){
@@ -114,7 +109,7 @@ void printWordByGuesses(char* guessedLetters, string word, int guesses){
 /*
   debug function that prints out information about a given word family
  */
-void familyInfo(set<string> family){
+void familyInfo(const set<string>& family){
     cout << "len: " << family.size() << "\n{";
 
     int i = 0;
@@ -131,7 +126,7 @@ void familyInfo(set<string> family){
 /*
   prints all the families in a set
  */
-void familiesInfo(set<set<string> > families){
+void familiesInfo(const set<set<string>>& families){
     for (set<string> fam : families){
         familyInfo(fam);
     }
@@ -140,7 +135,7 @@ void familiesInfo(set<set<string> > families){
 /*
   sets the words set to the longest word family in the families set
  */
-void longestFamily(set<string>& words, const set<set<string> > families){
+void longestFamily(set<string>& words, const set<set<string>>& families){
     set<string> longest;
     
     for (set<string> family : families){
@@ -156,7 +151,7 @@ void longestFamily(set<string>& words, const set<set<string> > families){
 /*
   checks if a given char is in a string
  */
-bool charInWord(const string word, char letter){
+bool charInWord(const string& word, char letter){
     bool match = false;
 
     for (char wLetter : word){
@@ -169,7 +164,7 @@ bool charInWord(const string word, char letter){
 /*
    Takes a word and the letter and gives back how many occuerences of the letter the word include
  */
-int occurencesInWord(const string word, char letter){
+int occurencesInWord(const string& word, char letter){
     int occurences = 0;
     for (char wLetter : word){
         if(wLetter == letter){
@@ -185,7 +180,7 @@ int occurencesInWord(const string word, char letter){
   assumes the list has been sorted by family.
   returns true if family was found, otherwise false
  */
-bool getNonMatch(char guess, const set<set<string> > families, set<string>& words){
+bool getNonMatch(char guess, const set<set<string>>& families, set<string>& words){
     for (set<string> family : families){
 
         if(charInWord(*family.begin(), guess)){
@@ -195,8 +190,11 @@ bool getNonMatch(char guess, const set<set<string> > families, set<string>& word
     }
     return false;
 }
+/*
+ Gives back the family whom contain the least matching letters
 
-void getLeastMatch (char guess, const set<set<string>>families,set<string>& words){
+*/
+void getLeastMatch (char guess, const set<set<string>>& families, set<string>& words){
     set<string> tempwords{*families.begin()};
 
     for (set<string> family : families){
@@ -210,9 +208,9 @@ void getLeastMatch (char guess, const set<set<string>>families,set<string>& word
 
 
 /*
-  
+  Return true if you have guessed right in all letters of word
  */
-bool wholeMatch(string word, char* guessedLetters, int guesses){
+bool wholeMatch(const string& word, char* guessedLetters, int guesses){
     bool match = true;
     char guess;
     
@@ -228,6 +226,10 @@ bool wholeMatch(string word, char* guessedLetters, int guesses){
     return match;
 }
 
+/*
+ takes in yes or no, if given anything else it will prompt  with a text and take another string
+
+*/
 bool getYesNo(){
     string answ;
 
@@ -240,6 +242,9 @@ bool getYesNo(){
     
 }
 
+/*
+   Takes in a guess and return it if valid otherwise prompt for new value
+*/
 char getLetter(const char* guessedLetters, int guesses){
     char guess;
     bool new_letter = false;
@@ -272,6 +277,10 @@ char getLetter(const char* guessedLetters, int guesses){
     return guess;
 }
 
+/*
+    Takes in a number between bot-top, if not valid prompt again
+
+*/
 int getInt(int bot, int top){
     bool correct_input = false;
     int nr;
@@ -297,6 +306,10 @@ int getInt(int bot, int top){
     return nr;
 }
 
+/*
+    takes in a number and return it, if invalid prompt user again
+
+*/
 int getWordLength(){
     bool correct_input = false;
     int length;
@@ -315,10 +328,28 @@ int getWordLength(){
     return length;
 }
 
+/*
+    Tries to take the hardest family to guess. If difference between families is less than 10 make getLeastMatch() deside the family whom is the harder to guess ;
+*/
+void hardestGuess(char guess,set<set<string>> families, set<string>& words, unsigned int cutoff){
+    longestFamily(words,families);
+    families.erase(words);
+    set<string> nextLongest;
+
+    while(families.size()){
+        longestFamily(nextLongest,families);
+        families.erase(nextLongest);
+        if(words.size() - nextLongest.size() < cutoff){
+            set<set<string> > leastMatch;
+            leastMatch.insert(words);
+            leastMatch.insert(nextLongest);
+            getLeastMatch(guess,leastMatch,words);
+        }
+    }
+}
 
 int main() {
     char guessedLetters[LIFE];
-    //std::array<char, LIFE> guessedLetters;
     char guess;
     int guesses = 0;
     int life = 0;
@@ -363,6 +394,11 @@ int main() {
         }
         else{
             longestFamily(words, families);
+            familyInfo(words);
+
+            if(families.size() > 1 ){
+                hardestGuess(guess, families,words,10);
+            }
         }
 
         if (!(charInWord(*words.begin(), guess))){

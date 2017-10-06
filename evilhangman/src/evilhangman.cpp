@@ -397,7 +397,6 @@ int main() {
         }
         else{
             longestFamily(words, families);
-            familyInfo(words);
 
             if(families.size() > 1 ){
                 hardestGuess(guess, families,words,10);

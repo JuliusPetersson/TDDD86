@@ -329,7 +329,9 @@ int getWordLength(){
 }
 
 /*
-    Tries to take the hardest family to guess. If difference between families is less than 10 make getLeastMatch() deside the family whom is the harder to guess ;
+    //This is the extension for E2. It makes it harder to get the words since if two families are somewhat equal size it take the one who have least amount of the guessed word
+
+    Tries to take the hardest family to guess. If difference between families is less than 10 make getLeastMatch() deside the family whom is the harder to guess 
 */
 void hardestGuess(char guess,set<set<string>> families, set<string>& words, unsigned int cutoff){
     longestFamily(words,families);
@@ -389,6 +391,7 @@ int main() {
         guesses++;
         sortByFamily(guess, words, families);
 
+        //This is the extension E1. If we are on the last guess it will take the familiy whom display the least on the sceen 
         if (life == 1){
             getLeastMatch(guess,families,words);
         }

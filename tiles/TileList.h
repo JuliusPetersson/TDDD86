@@ -16,9 +16,11 @@ public:
      * @brief Init an empty list with the size of 10
      */
     TileList();
-    /**TileList
+    /**
+     * TileList
      * @brief Destructor
      */
+
     ~TileList();
 
     /**
@@ -47,7 +49,7 @@ public:
      */
     void lower(int x, int y);
 
-    /**TileList
+    /**TileLi = {1000.0, 2.0, 3st
      * @brief raise puts the tile clicked to the end. If no object at coordinates, do nothing .Comlexity worst case Ordo(n)
      * @param x coordinate
      * @param y coordinate
@@ -69,6 +71,10 @@ public:
     void removeAll(int x, int y);
 
 private:
+    const int TILE_SIZE_MULT;
+    int nrOfElements;
+    int sizeOfArray;
+    Tile* tiles;
 
 };
 

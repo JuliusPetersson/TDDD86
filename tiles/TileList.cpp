@@ -26,7 +26,6 @@ void TileList::addTile(Tile tile)
     if(nrOfElements +1 < sizeOfArray){
         tiles[nrOfElements] = tile;
     }else{
-        std::cout << "hohoo  " << sizeOfArray + TILE_SIZE_MULT <<endl;
         int newSize = sizeOfArray + TILE_SIZE_MULT;
         Tile tmpTiles[newSize];
 
@@ -34,7 +33,7 @@ void TileList::addTile(Tile tile)
             tmpTiles[i] = tiles[i];
         }
         tmpTiles[nrOfElements + 1] = tile;
-        //delete[] tiles;
+        //kommer den verkligen ta bort tiles då pekarbyten på raden under? (tmpTIles försvinner ty stacken men de gamla elementen som ligger på tiles)
         this->tiles = tmpTiles;
         sizeOfArray = newSize;
     }
@@ -46,7 +45,6 @@ void TileList::drawAll(QGraphicsScene* scene)
 {
     // TODO: write this member
     for (int i = 0; i < nrOfElements; i++){
-        std::cout << i << endl;
         tiles[i].draw(scene);
     }
 }
@@ -69,6 +67,13 @@ void TileList::lower(int x, int y)
 void TileList::remove(int x, int y)
 {
     // TODO: write this member
+    for(int i=nrOfElements-1; i>0; i--){
+        if((tiles->x < x < x+ tiles->width) & (tiles->y < y < y + tiles->height)){
+            for (int j=i; i<nrOfElements; j++){
+                tiles[j] = tiles[j+1];
+            }
+        }
+    }
 }
 
 void TileList::removeAll(int x, int y)

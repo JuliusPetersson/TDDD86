@@ -23,20 +23,23 @@ TileList::~TileList()
 void TileList::addTile(Tile tile)
 {
     // TODO: write this member
-    if(nrOfElements<sizeOfArray){
+    if(nrOfElements + 1 < sizeOfArray){
         tiles[nrOfElements + 1] = tile;
     }else{
+        std::cout << "hohoo  " << sizeOfArray + TILE_SIZE_MULT <<endl;
         int newSize = sizeOfArray + TILE_SIZE_MULT;
         Tile tmpTiles[newSize];
 
-        for(auto i=0; i< sizeOfArray; i++){
+        for(auto i=0; i < nrOfElements; i++){
             tmpTiles[i] = tiles[i];
         }
-        tmpTiles[sizeOfArray + 1] = tile;
+        tmpTiles[nrOfElements + 1] = tile;
         this->tiles = tmpTiles;
+        sizeOfArray = newSize;
     }
 
     nrOfElements++;
+    std::cout << nrOfElements <<endl;
 }
 
 void TileList::drawAll(QGraphicsScene* scene)
@@ -45,7 +48,6 @@ void TileList::drawAll(QGraphicsScene* scene)
     for (int i = 0; i < nrOfElements; i++){
         tiles[i].draw(scene);
     }
-
 }
 
 int TileList::indexOfTopTile(int x, int y)

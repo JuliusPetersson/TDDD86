@@ -47,32 +47,64 @@ void TileList::drawAll(QGraphicsScene* scene)
 
 int TileList::indexOfTopTile(int x, int y)
 {
-    // TODO: write this member
+    for(int i=nrOfElements-1; i>0; i--){
+        if(tiles[i].contains(x,y)){
+            return i;
+        }
+    }
+
+    return -1;
 }
 
 void TileList::raise(int x, int y)
 {
-    // TODO: write this member
+    for(int i=nrOfElements-1; i>0; i--){
+        if(tiles[i].contains(x,y)){
+            Tile tmp = tiles[i];
+            for (int j=i; j<nrOfElements-1; j++){
+                tiles[j] = tiles[j+1];
+            }
+            tiles[nrOfElements-1] = tmp;
+            break;
+        }
+    }
 }
 
 void TileList::lower(int x, int y)
 {
-    // TODO: write this member
+    for(int i=nrOfElements-1; i>0; i--){
+        if(tiles[i].contains(x,y)){
+            Tile tmp = tiles[i];
+            for (int j=i; j > 0; j--){
+                tiles[j] = tiles[j-1];
+            }
+            tiles[0] = tmp;
+            break;
+        }
+    }
 }
 
 void TileList::remove(int x, int y)
 {
-    // TODO: write this member
     for(int i=nrOfElements-1; i>0; i--){
-        if((tiles->x < x < x+ tiles->width) & (tiles->y < y < y + tiles->height)){
-            for (int j=i; i<nrOfElements; j++){
+        if(tiles[i].contains(x,y)){
+            nrOfElements--;
+            for (int j=i; j<nrOfElements; j++){
                 tiles[j] = tiles[j+1];
             }
+            break;
         }
     }
 }
 
 void TileList::removeAll(int x, int y)
 {
-    // TODO: write this member
+    for(int i=nrOfElements-1; i>0; i--){
+        if(tiles[i].contains(x,y)){
+            nrOfElements--;
+            for (int j=i; j<nrOfElements; j++){
+                tiles[j] = tiles[j+1];
+            }
+        }
+    }
 }

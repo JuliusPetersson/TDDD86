@@ -10,7 +10,7 @@
 TileList::TileList()
     : TILE_SIZE_MULT(10),nrOfElements(0),sizeOfArray(TILE_SIZE_MULT)
 {
-   tiles = new Tile[TILE_SIZE_MULT];
+   tiles = new Tile[sizeOfArray];
 }
 
 TileList::~TileList()
@@ -20,20 +20,18 @@ TileList::~TileList()
 
 void TileList::addTile(Tile tile)
 {
-    //cout << "add: " << tile << nrOfElements << ": prevEl: " << tiles[nrOfElements] << endl;
     if(nrOfElements +1 < sizeOfArray){
         this->tiles[nrOfElements] = tile;
-        cout << tiles[nrOfElements] << endl;
     }else{
         int newSize = sizeOfArray + TILE_SIZE_MULT;
-        Tile tmpTiles[newSize];
+        Tile *tmpTiles = new Tile [newSize];
 
-        for(auto i=0; i < nrOfElements; i++){
-            tmpTiles[i] = this->tiles[i];
+        for(int i=0; i < nrOfElements; i++){
+            tmpTiles[i] = tiles[i];
         }
-        tmpTiles[nrOfElements + 1] = tile;
-        //kommer den verkligen ta bort tiles då pekarbyten på raden under? (tmpTIles försvinner ty stacken men de gamla elementen som ligger på tiles)
-        this->tiles = tmpTiles;
+        tmpTiles[nrOfElements] = tile;
+        delete [] tiles;
+        tiles = tmpTiles;
         sizeOfArray = newSize;
     }
 
@@ -42,13 +40,9 @@ void TileList::addTile(Tile tile)
 
 void TileList::drawAll(QGraphicsScene* scene)
 {
-    // TODO: write this member
-    cout << "Drawing----------" << endl;
     for (int i = 0; i < nrOfElements; i++){
-        cout << tiles[i] << endl;
         tiles[i].draw(scene);
-    }
-    cout << "-----------------" << endl;
+    } 
 }
 
 int TileList::indexOfTopTile(int x, int y)

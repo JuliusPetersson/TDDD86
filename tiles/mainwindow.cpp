@@ -34,6 +34,9 @@ MainWindow::MainWindow(QWidget *parent) :
     for (int i = 0; i < TILE_COUNT; ++i) {
         addRandomTile(tlist);
     }
+
+    cout << "_____________________________________" << endl;
+
     tlist.drawAll(scene);
 }
 

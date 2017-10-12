@@ -47,7 +47,7 @@ void TileList::drawAll(QGraphicsScene* scene)
 
 int TileList::indexOfTopTile(int x, int y)
 {
-    for(int i=nrOfElements-1; i>0; i--){
+    for(int i=nrOfElements-1; i>=0; i--){
         if(tiles[i].contains(x,y)){
             return i;
         }
@@ -58,7 +58,7 @@ int TileList::indexOfTopTile(int x, int y)
 
 void TileList::raise(int x, int y)
 {
-    for(int i=nrOfElements-1; i>0; i--){
+    for(int i=nrOfElements-1; i>=0; i--){
         if(tiles[i].contains(x,y)){
             Tile tmp = tiles[i];
             for (int j=i; j<nrOfElements-1; j++){
@@ -72,7 +72,7 @@ void TileList::raise(int x, int y)
 
 void TileList::lower(int x, int y)
 {
-    for(int i=nrOfElements-1; i>0; i--){
+    for(int i=nrOfElements-1; i>=0; i--){
         if(tiles[i].contains(x,y)){
             Tile tmp = tiles[i];
             for (int j=i; j > 0; j--){
@@ -86,7 +86,7 @@ void TileList::lower(int x, int y)
 
 void TileList::remove(int x, int y)
 {
-    for(int i=nrOfElements-1; i>0; i--){
+    for(int i=nrOfElements-1; i>=0; i--){
         if(tiles[i].contains(x,y)){
             nrOfElements--;
             for (int j=i; j<nrOfElements; j++){
@@ -99,7 +99,7 @@ void TileList::remove(int x, int y)
 
 void TileList::removeAll(int x, int y)
 {
-    for(int i=nrOfElements-1; i>0; i--){
+    for(int i=nrOfElements-1; i>=0; i--){
         if(tiles[i].contains(x,y)){
             nrOfElements--;
             for (int j=i; j<nrOfElements; j++){

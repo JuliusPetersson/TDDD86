@@ -38,6 +38,8 @@ int main(int argc, char *argv[]) {
 
     // run insertion heuristic
     Tour tour;
+    //TODO remove this line below
+    tour.draw(scene);
     //double x;
     //double y;
     //while (input >> x >> y) {

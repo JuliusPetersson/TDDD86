@@ -24,7 +24,7 @@ Tour::Tour()
     node1 = new Node(p1,node2);
     node0 = new Node(p0,node1);
 
-    node2->next = node0;
+    //node2->next = node0;
     node3->next = node0;
     firstNode = node0;
 }
@@ -113,7 +113,25 @@ void Tour::insertNearest(Point p)
 {
     // TODO: write this member
     if(firstNode == nullptr){
-        Node node(p);
+        firstNode = new Node(p,nullptr);
+
+    }else{
+        Node* currNode = firstNode->next;
+
+        Node* closestNode = nullptr;
+        double cloestDistance;
+
+        while(currNode != firstNode){
+            double valueX = currNode->point.x - p.x;
+            double valueY = currNode->point.y - p.y;
+
+            //Qr warning is wrong, if not set it will not try it since ==nullptr is true!
+            if ((closestNode == nullptr) | (hypot(valueX,valueY)< cloestDistance)){
+                closestNode = currNode;
+            }
+            currNode = currNode->next;
+
+        }
     }
 }
 

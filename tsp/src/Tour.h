@@ -24,6 +24,15 @@ public:
 
 private:
     Node* firstNode;
+    Point* p0;
+    Point* p1;
+    Point* p2;
+    Point* p3;
+
+    Node* node0;
+    Node* node1;
+    Node* node2;
+    Node* node3;
 };
 
 #endif // TOUR_H

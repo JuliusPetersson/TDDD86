@@ -19,10 +19,8 @@ Tour::Tour()
     p2 = new Point(500.0,500.0);
     p3 = new Point(100.0,500.0);
 
-    //Point p0(100.0,100.0);
-
     node3 = new Node(*p3);
-    node2 = new Node(*p2,node0);
+    node2 = new Node(*p2,node3);
     node1 = new Node(*p1,node2);
     node0 = new Node(*p0,node1);
 
@@ -32,7 +30,6 @@ Tour::Tour()
 
 Tour::~Tour()
 {
-    // TODO: write this member
     delete firstNode;
 }
 
@@ -51,6 +48,16 @@ void Tour::show()
 void Tour::draw(QGraphicsScene *scene)
 {
     // TODO: write this member
+    Node* currNode = firstNode;
+    bool firstTime = true;
+    while(currNode != firstNode || firstTime){
+        firstTime = false;
+        currNode->point.draw(scene);
+        currNode->next->point.draw(scene);
+        currNode->point.drawTo(currNode->next->point,scene);
+
+        currNode = currNode->next;
+    }
 }
 
 int Tour::size()

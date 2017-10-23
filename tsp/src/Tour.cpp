@@ -85,7 +85,6 @@ int Tour::size()
 
 double Tour::distance()
 {
-    // TODO: write this member
     Node* currNode = firstNode;
     double distance = 0;
     bool firstTime = true;
@@ -115,6 +114,9 @@ void Tour::insertNearest(Point p)
     if(firstNode == nullptr){
         firstNode = new Node(p,nullptr);
     }else{
+        if(firstNode->next == nullptr){
+            firstNode->next = new Node(p,firstNode);
+        }
         Node* currNode = firstNode->next;
 
         Node* closestNode = firstNode;

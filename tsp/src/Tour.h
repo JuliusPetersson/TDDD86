@@ -24,11 +24,6 @@ public:
 
 private:
     Node* firstNode;
-
-    Node* node0;
-    Node* node1;
-    Node* node2;
-    Node* node3;
 };
 
 #endif // TOUR_H

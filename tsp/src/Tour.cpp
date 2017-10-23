@@ -12,7 +12,7 @@
 
 Tour::Tour()
 {
-    firstNode = new Node(*(new Point(NAN,NAN)),nullptr);
+    firstNode = new Node(*(new Point(NULL,NULL)),nullptr);
 
     //Point p0(100.0,100.0);
     //Point p1(500.0,100.0);
@@ -111,7 +111,7 @@ double Tour::distance()
 void Tour::insertNearest(Point p)
 {
     // TODO: write this member
-    if(firstNode->point.x == NAN){
+    if(firstNode->point.x == NULL){
         firstNode = new Node(p,nullptr);
     }else{
         if(firstNode->next == nullptr){

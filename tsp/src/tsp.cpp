@@ -42,7 +42,6 @@ int main(int argc, char *argv[]) {
     double x;
     double y;
     while (input >> x >> y) {
-        cout << "fasdd" << endl;
         Point p(x, y);
         tour.insertNearest(p);
         //uncomment the 4 lines below to animate

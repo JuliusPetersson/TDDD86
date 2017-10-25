@@ -67,7 +67,7 @@ void Tour::draw(QGraphicsScene *scene)
 
 int Tour::size()
 {
-    // TODO: write this member    
+    // TODO: write this member
     Node* currNode = firstNode->next;
 
     if(currNode == nullptr){
@@ -110,30 +110,34 @@ double Tour::distance()
 
 void Tour::insertNearest(Point p)
 {
-    // TODO: write this member
     if(firstNode->point.x == NULL){
         firstNode = new Node(p,nullptr);
     }else{
         if(firstNode->next == nullptr){
             firstNode->next = new Node(p,firstNode);
-        }
-        Node* currNode = firstNode->next;
+        }else{
+            Node* currNode = firstNode;
 
-        Node* closestNode = firstNode;
-        double cloestDistance = 0;
+            Node* closestNode = firstNode;
+            double cloestDistance = 0;
 
-        while(currNode != firstNode){
-            double valueX = currNode->point.x - p.x;
-            double valueY = currNode->point.y - p.y;
+            bool firstTime = true;
+            while((currNode != firstNode) | firstTime){
+                firstTime = false;
+                double valueX = currNode->point.x - p.x;
+                double valueY = currNode->point.y - p.y;
 
-            if ((cloestDistance == 0) | (hypot(valueX,valueY) < cloestDistance)){
-                closestNode = currNode;
+                double currNodeDistance = hypot(valueX,valueY);
+                if ((cloestDistance == 0) | (currNodeDistance < cloestDistance)){
+                    closestNode = currNode;
+                    cloestDistance = currNodeDistance;
+                }
+                currNode = currNode->next;
+
             }
-            currNode = currNode->next;
-
+            Node* inNode = new Node(p, closestNode->next);
+            closestNode->next = inNode;
         }
-        Node* inNode = new Node(p, closestNode->next);
-        closestNode->next = inNode;
     }
 }
 

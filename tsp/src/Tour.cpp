@@ -143,5 +143,39 @@ void Tour::insertNearest(Point p)
 
 void Tour::insertSmallest(Point p)
 {
-    // TODO: write this member
+    if(firstNode->point.x == NULL){
+        firstNode = new Node(p,nullptr);
+    }else{
+        if(firstNode->next == nullptr){
+            firstNode->next = new Node(p,firstNode);
+        }else{
+            Node* currNode = firstNode;
+
+            Node* closestNode = firstNode;
+            double leastRaise = 0;
+
+            bool firstTime = true;
+            while((currNode != firstNode) | firstTime){
+                firstTime = false;
+                double valueX = currNode->point.x - p.x;
+                double valueY = currNode->point.y - p.y;
+
+                double nextValueX = currNode->next->point.x - p.x;
+                double nextValueY = currNode->next->point.y - p.y;
+
+                double currValueX = currNode->point.x - currNode->next->point.x;
+                double currValueY = currNode->point.y - currNode->next->point.y;
+                //problem here
+                double currNodeRaise = hypot(valueX,valueY) + hypot(nextValueX,nextValueY) - hypot(currValueX,currValueY);
+                if ((leastRaise == 0) | (currNodeRaise < leastRaise)){
+                    closestNode = currNode;
+                    leastRaise = currNodeRaise;
+                }
+                currNode = currNode->next;
+
+            }
+            Node* inNode = new Node(p, closestNode->next);
+            closestNode->next = inNode;
+        }
+    }
 }

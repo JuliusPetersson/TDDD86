@@ -8,7 +8,7 @@
 #include "TileList.h"
 
 TileList::TileList()
-    : TILE_SIZE_MULT(10),nrOfElements(0),sizeOfArray(TILE_SIZE_MULT)
+    : TILE_SIZE_MULT(2),nrOfElements(0),sizeOfArray(10)
 {
    tiles = new Tile[sizeOfArray];
 }
@@ -23,7 +23,7 @@ void TileList::addTile(Tile tile)
     if(nrOfElements +1 < sizeOfArray){
         this->tiles[nrOfElements] = tile;
     }else{
-        int newSize = sizeOfArray + TILE_SIZE_MULT;
+        int newSize = sizeOfArray * TILE_SIZE_MULT;
         Tile *tmpTiles = new Tile [newSize];
 
         for(int i=0; i < nrOfElements; i++){

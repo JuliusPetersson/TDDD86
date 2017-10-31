@@ -1,9 +1,3 @@
-// This is the .h file you will edit and turn in.
-// We have provided a skeleton for you,
-// but you must finish it as described in the spec.
-// Also remove these comments here and add your own, as well as on the members.
-// TODO: remove this comment header
-
 #ifndef TOUR_H
 #define TOUR_H
 
@@ -13,13 +7,36 @@
 class Tour {
 public:
 
+    /**
+     * @brief Tour is a list of points
+     */
     Tour();
     ~Tour();
+    /**
+     * @brief Prints the all the points in the tour in order
+     */
     void show();
+    /**
+     * @brief Creates a window to graphicly display the tour
+     * @param QTgrapics obejct to draw on/with
+     */
     void draw(QGraphicsScene* scene);
+    /**
+     * @brief Walks the list and count the number of points
+     * @return Number of points in the tour
+     */
     int size();
+    /**
+     * @brief Walks the list and return the distance it "travelled"
+     */
     double distance();
+    /**
+     * @brief Insert the point at the closest node
+     */
     void insertNearest(Point p);
+    /**
+     * @brief Insert the point where it would add the leastest distance to the tour
+     */
     void insertSmallest(Point p);
 
 private:

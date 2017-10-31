@@ -49,7 +49,7 @@ public:
      */
     void lower(int x, int y);
 
-    /**TileLi = {1000.0, 2.0, 3st
+    /**
      * @brief raise puts the tile clicked to the end. If no object at coordinates, do nothing .Comlexity worst case Ordo(n)
      * @param x coordinate
      * @param y coordinate

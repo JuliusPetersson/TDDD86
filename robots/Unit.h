@@ -30,12 +30,12 @@ public:
     /*
     * Can I catch u in one move?
     */
-    bool attacks(const Unit& u) const;
+    virtual bool attacks(const Unit& u) const;
 
     /*
     * Take one step closer to u
     */
-    void moveTowards(const Unit& u);
+    virtual void moveTowards(const Unit& u);
 
     /*
     * Teleport. Does not check for collision
@@ -46,6 +46,12 @@ public:
     * Euclidean distance to u
     */
     double distanceTo(const Unit& u) const;
+
+    /*
+    * Draws self
+    */
+    virtual void draw(){}
+
 private:
     int x;  // x position of this unit
     int y;  // y position of this unit

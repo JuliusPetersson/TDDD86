@@ -23,8 +23,6 @@ void GameState::draw(QGraphicsScene *scene) const {
     scene->clear();
     for (size_t i = 0; i < robots.size(); ++i)
         robots[i].draw(scene);
-    for (size_t i = 0; i < junks.size(); ++i)
-        junks[i].draw(scene);
     hero.draw(scene);
 }
 
@@ -42,10 +40,10 @@ int GameState::countCollisions() {
     int numberDestroyed = 0;
     unsigned int i = 0;
     while (i < robots.size()) {
-        bool hitJunk = junkAt (robots[i]);
+        bool hitJunk = robots[i].isJunk();
         bool collision = (countRobotsAt (robots[i]) > 1);
         if (hitJunk || collision) {
-            if (!hitJunk) junks.push_back (Junk(robots[i]));
+            if (!hitJunk) robots.push_back (Junk(robots[i]));
             robots[i] = robots[robots.size()-1];
             robots.pop_back();
             numberDestroyed++;
@@ -55,7 +53,10 @@ int GameState::countCollisions() {
 }
 
 bool GameState::anyRobotsLeft() const {
-    return (robots.size() != 0);
+    for (int i = 0; i < robots.size(); i++){
+        if (robots[i].isJunk()) return true;
+    }
+    return false;
 }
 
 bool GameState::heroDead() const {
@@ -65,7 +66,6 @@ bool GameState::heroDead() const {
 bool GameState::isSafe(const Unit& unit) const {
     for (unsigned int i = 0; i < robots.size(); i++)
         if (robots[i].attacks(unit)) return false;
-    if (junkAt(unit)) return false;
     return true;
 }
 
@@ -79,7 +79,7 @@ Hero GameState::getHero() const {return hero;}
  * Free of robots and junk only
  */
 bool GameState::isEmpty(const Unit& unit) const {
-    return (countRobotsAt(unit) == 0 && !junkAt(unit));
+    return (countRobotsAt(unit) == 0 && !unit.isJunk());
 }
 
 /*

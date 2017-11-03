@@ -1,10 +1,3 @@
-// This is the .cpp file you will edit and turn in.
-// We have provided a skeleton for you,
-// but you must finish it as described in the spec.
-// Also remove these comments here and add your own.
-// TODO: remove this comment header
-
-
 #include "TileList.h"
 
 TileList::TileList()
@@ -38,14 +31,14 @@ void TileList::addTile(Tile tile)
     nrOfElements++;
 }
 
-void TileList::drawAll(QGraphicsScene* scene)
+void TileList::drawAll(QGraphicsScene* scene) const
 {
     for (int i = 0; i < nrOfElements; i++){
         tiles[i].draw(scene);
     } 
 }
 
-int TileList::indexOfTopTile(int x, int y)
+int TileList::indexOfTopTile(int x, int y) const
 {
     for(int i = nrOfElements - 1; i >= 0; i--){
         if(tiles[i].contains(x,y)){

@@ -20,13 +20,13 @@ TileList::~TileList()
 
 void TileList::addTile(Tile tile)
 {
-    if(nrOfElements +1 < sizeOfArray){
+    if(nrOfElements + 1 < sizeOfArray){
         this->tiles[nrOfElements] = tile;
     }else{
         int newSize = sizeOfArray * TILE_SIZE_MULT;
         Tile *tmpTiles = new Tile [newSize];
 
-        for(int i=0; i < nrOfElements; i++){
+        for(int i = 0; i < nrOfElements; i++){
             tmpTiles[i] = tiles[i];
         }
         tmpTiles[nrOfElements] = tile;
@@ -47,7 +47,7 @@ void TileList::drawAll(QGraphicsScene* scene)
 
 int TileList::indexOfTopTile(int x, int y)
 {
-    for(int i=nrOfElements-1; i>=0; i--){
+    for(int i = nrOfElements - 1; i >= 0; i--){
         if(tiles[i].contains(x,y)){
             return i;
         }
@@ -58,10 +58,10 @@ int TileList::indexOfTopTile(int x, int y)
 
 void TileList::raise(int x, int y)
 {
-    for(int i=nrOfElements-1; i>=0; i--){
+    for(int i = nrOfElements - 1; i >= 0; i--){
         if(tiles[i].contains(x,y)){
             Tile tmp = tiles[i];
-            for (int j=i; j<nrOfElements-1; j++){
+            for (int j = i; j < nrOfElements - 1; j++){
                 tiles[j] = tiles[j+1];
             }
             tiles[nrOfElements-1] = tmp;
@@ -72,7 +72,7 @@ void TileList::raise(int x, int y)
 
 void TileList::lower(int x, int y)
 {
-    for(int i=nrOfElements-1; i>=0; i--){
+    for(int i = nrOfElements - 1 ; i >= 0; i--){
         if(tiles[i].contains(x,y)){
             Tile tmp = tiles[i];
             for (int j=i; j > 0; j--){
@@ -86,10 +86,10 @@ void TileList::lower(int x, int y)
 
 void TileList::remove(int x, int y)
 {
-    for(int i=nrOfElements-1; i>=0; i--){
+    for(int i = nrOfElements - 1; i >= 0; i--){
         if(tiles[i].contains(x,y)){
             nrOfElements--;
-            for (int j=i; j<nrOfElements; j++){
+            for (int j = i; j < nrOfElements; j++){
                 tiles[j] = tiles[j+1];
             }
             break;
@@ -99,10 +99,10 @@ void TileList::remove(int x, int y)
 
 void TileList::removeAll(int x, int y)
 {
-    for(int i=nrOfElements-1; i>=0; i--){
+    for(int i = nrOfElements - 1; i >= 0; i--){
         if(tiles[i].contains(x,y)){
             nrOfElements--;
-            for (int j=i; j<nrOfElements; j++){
+            for (int j = i; j < nrOfElements; j++){
                 tiles[j] = tiles[j+1];
             }
         }

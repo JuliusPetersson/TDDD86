@@ -25,7 +25,7 @@ Tour::~Tour()
     delete firstNode;
 }
 
-void Tour::show()
+void Tour::show() const
 {
     if (firstNode != nullptr){
 
@@ -40,24 +40,22 @@ void Tour::show()
     }
 }
 
-void Tour::draw(QGraphicsScene *scene)
+void Tour::draw(QGraphicsScene *scene) const
 {
     if (firstNode != nullptr){
         Node* currNode = firstNode;
 
-        bool firstTime = true;
-        while(currNode != firstNode || firstTime){
-            firstTime = false;
+        do{
             currNode->point.draw(scene);
             currNode->next->point.draw(scene);
             currNode->point.drawTo(currNode->next->point,scene);
 
             currNode = currNode->next;
-        }
+        }while(currNode != firstNode);
     }
 }
 
-int Tour::size()
+int Tour::size() const
 {
     if (firstNode == nullptr){
         return 0;
@@ -77,16 +75,14 @@ int Tour::size()
     return size;
 }
 
-double Tour::distance()
+double Tour::distance() const
 {
     if (firstNode == nullptr){
         return 0;
     }
     Node* currNode = firstNode;
     double distance = 0;
-    bool firstTime = true;
-    while(currNode != firstNode || firstTime){
-        firstTime = false;
+    do{
         double currX = currNode->point.x;
         double currY = currNode->point.y;
 
@@ -99,8 +95,8 @@ double Tour::distance()
         distance += hypot(valueX,valueY);
 
         currNode = currNode->next;
-    }
 
+    }while(currNode != firstNode);
 
     return distance;
 }
@@ -116,9 +112,7 @@ void Tour::insertNearest(Point p)
         Node* closestNode = firstNode;
         double cloestDistance = 0;
 
-        bool firstTime = true;
-        while((currNode != firstNode) | firstTime){
-            firstTime = false;
+        do{
             double valueX = currNode->point.x - p.x;
             double valueY = currNode->point.y - p.y;
 
@@ -129,7 +123,8 @@ void Tour::insertNearest(Point p)
             }
             currNode = currNode->next;
 
-        }
+        }while((currNode != firstNode));
+
         Node* inNode = new Node(p, closestNode->next);
         closestNode->next = inNode;
     }
@@ -147,9 +142,7 @@ void Tour::insertSmallest(Point p)
         Node* closestNode = firstNode;
         double leastRaise = 0;
 
-        bool firstTime = true;
-        while((currNode != firstNode) | firstTime){
-            firstTime = false;
+        do{
             double valueX = currNode->point.x - p.x;
             double valueY = currNode->point.y - p.y;
 
@@ -165,8 +158,8 @@ void Tour::insertSmallest(Point p)
                 leastRaise = currNodeRaise;
             }
             currNode = currNode->next;
+        }while((currNode != firstNode));
 
-        }
         Node* inNode = new Node(p, closestNode->next);
         closestNode->next = inNode;
     }

@@ -15,21 +15,21 @@ public:
     /**
      * @brief Prints the all the points in the tour in order
      */
-    void show();
+    void show() const;
     /**
      * @brief Creates a window to graphicly display the tour
      * @param QTgrapics obejct to draw on/with
      */
-    void draw(QGraphicsScene* scene);
+    void draw(QGraphicsScene* scene) const;
     /**
      * @brief Walks the list and count the number of points
      * @return Number of points in the tour
      */
-    int size();
+    int size() const;
     /**
      * @brief Walks the list and return the distance it "travelled"
      */
-    double distance();
+    double distance() const;
     /**
      * @brief Insert the point at the closest node
      */

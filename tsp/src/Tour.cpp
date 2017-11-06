@@ -17,9 +17,10 @@ Tour::~Tour()
 
         std::cout << *firstNode << endl;
         while(currNode != firstNode){
-            delete currNode;
 
-            currNode = currNode->next;
+            Node* tmp = currNode->next;
+            delete currNode;
+            currNode = tmp;
         }
     }
     delete firstNode;

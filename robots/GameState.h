@@ -74,7 +74,7 @@ private:
 
     // private helpers
     bool isEmpty(const Unit& unit) const;
-    bool junkAt(const Unit& unit) const;
+    //bool junkAt(const Unit& unit) const;
     int countRobotsAt(const Unit& unit) const;
 
 };

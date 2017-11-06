@@ -54,7 +54,7 @@ int GameState::countCollisions() {
 
 bool GameState::anyRobotsLeft() const {
     for (int i = 0; i < robots.size(); i++){
-        if (robots[i].isJunk()) return true;
+        if (!robots[i].isJunk()) return true;
     }
     return false;
 }
@@ -79,17 +79,22 @@ Hero GameState::getHero() const {return hero;}
  * Free of robots and junk only
  */
 bool GameState::isEmpty(const Unit& unit) const {
-    return (countRobotsAt(unit) == 0 && !unit.isJunk());
+    for(Robot robot : robots){
+        if(robot.at(unit)){
+            return false;
+        }
+    }
+    return true;
 }
 
 /*
  * Is there junk at unit?
  */
-bool GameState::junkAt(const Unit& unit) const {
+/*bool GameState::junkAt(const Unit& unit) const {
     for (size_t i = 0; i < junks.size(); ++i)
         if (junks[i].at(unit)) return true;
     return false;
-}
+}*/
 
 /*
  * How many robots are there at unit?

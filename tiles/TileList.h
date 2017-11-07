@@ -51,7 +51,7 @@ public:
     void raise(int x, int y);
 
     /**
-     * @brief remove element clicked at the highest position. If no object at coordinates, do nothing. Complexity worst case Ordo(n)
+     *  @brief remove element clicked at the highest position. If no object at coordinates, do nothing. Complexity worst case Ordo(n)
      * @param x coordinate
      * @param y coordinate
      */

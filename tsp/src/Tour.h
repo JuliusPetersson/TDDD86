@@ -39,8 +39,17 @@ public:
      */
     void insertSmallest(Point p);
 
+    /**
+     * @brief nodeInterchange tries all possible combinations of swapping two nodes. Swap if shorter tour
+     * @param Point to be inserted into the tour
+     */
+    void nodeInterchange(Point p);
+
+
 private:
     Node* firstNode;
+    double testInterchange(int swapNode);
+
 };
 
 #endif // TOUR_H

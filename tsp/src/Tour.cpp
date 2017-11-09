@@ -166,3 +166,50 @@ void Tour::insertSmallest(Point p)
     }
 }
 
+double Tour::testInterchange(int swapNode){
+    if (firstNode == nullptr){
+        return 0;
+    }
+    Node* currNode = firstNode;
+    double newDistance = 0;
+    int counter = 0;
+    do{
+        if(counter == (swapNode - 1)){
+            if((swapNode - 1) != -1){
+                //normal case
+            }else{
+                //if -1 need last to be swapped
+            }
+        }else if(counter == swapNode){
+
+        }else if(counter == (swapNode + 1)){
+
+        }else{
+            double currX = currNode->point.x;
+            double currY = currNode->point.y;
+
+            double nextX = currNode->next->point.x;
+            double nextY = currNode->next->point.y;
+
+            double valueX = nextX - currX;
+            double valueY = nextY - currY;
+
+            newDistance += hypot(valueX,valueY);
+        }
+        counter++;
+        currNode = currNode->next;
+
+    }while(currNode != firstNode);
+
+    return newDistance;
+}
+
+void Tour::nodeInterchange(Point p){
+    insertNearest(p);
+
+    for(int i = 0; i < size(); i++){
+        testInterchange(i);
+    }
+    do stuff :
+}
+

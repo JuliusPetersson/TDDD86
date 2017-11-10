@@ -49,6 +49,7 @@ public:
 private:
     Node* firstNode;
     double testInterchange(int swapNode);
+    void doInterchange(int swapNode);
 
 };
 

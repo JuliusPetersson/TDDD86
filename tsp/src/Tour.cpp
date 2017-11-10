@@ -177,12 +177,26 @@ double Tour::testInterchange(int swapNode){
         if(counter == (swapNode - 1)){
             if((swapNode - 1) != -1){
                 //normal case
+                newDistance += currNode->point.distanceTo(currNode->next->next->point);
+
             }else{
-                //if -1 need last to be swapped
+                //if swapNode - 1 = 0 need last to be swapped
+                Node* currNode = firstNode->next;
+                do{
+                    currNode = currNode->next;
+                }while(currNode != firstNode->next);
+
+                newDistance += currNode->point.distanceTo(currNode->next->next->point);
+
             }
+
         }else if(counter == swapNode){
+            newDistance += currNode->point.distanceTo(currNode->next->next->point);
+            //since singly linked  list we must take change the next pointer here even though messy
+            newDistance += currNode->next->point.distanceTo(currNode->point);
 
         }else if(counter == (swapNode + 1)){
+            //do nothing since done in previous state
 
         }else{
             double currX = currNode->point.x;
@@ -204,12 +218,50 @@ double Tour::testInterchange(int swapNode){
     return newDistance;
 }
 
+void Tour::doInterchange(int swapNode){
+    Node* currNode = firstNode;
+    Node* memNode = nullptr;
+    int counter = 0;
+    do{
+        if(counter == (swapNode - 1)){
+            if((swapNode - 1) != -1){
+                //normal case
+                memNode = currNode->next;
+                currNode->next = currNode->next->next;
+
+            }else{
+                //if swapNode - 1 = 0 need last to be swapped
+                Node* currNode = firstNode->next;
+                do{
+                    currNode = currNode->next;
+                }while(currNode != firstNode->next);
+                memNode = currNode->next;
+                currNode->next = currNode->next->next;
+
+            }
+
+        }else if(counter == swapNode){
+            //since last pointer changed this is now the second pointer to be swapped compaired to the last time order
+            memNode->next = currNode->next;
+            currNode->next = memNode;
+
+        }else{
+            counter++;
+            currNode = currNode->next;
+        }
+
+    }while(currNode != firstNode);
+}
+
+
 void Tour::nodeInterchange(Point p){
     insertNearest(p);
 
     for(int i = 0; i < size(); i++){
-        testInterchange(i);
+        double lengthIfSwap = testInterchange(i);
+        if(0 < lengthIfSwap || lengthIfSwap < distance()){
+            doInterchange(i);
+        }
     }
-    do stuff :
 }
 

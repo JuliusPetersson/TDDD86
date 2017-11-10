@@ -43,7 +43,7 @@ int main(int argc, char *argv[]) {
     double y;
     while (input >> x >> y) {
         Point p(x, y);
-        tour.insertSmallest(p);
+        tour.nodeInterchange(p);
         //tour.insertNearest(p);
         //uncomment the 4 lines below to animate
         tour.draw(scene);

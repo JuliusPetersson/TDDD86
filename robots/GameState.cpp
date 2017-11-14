@@ -12,6 +12,7 @@ GameState::GameState(){}
 GameState::GameState(int numberOfRobots) {
     for (int i = 0; i < numberOfRobots; i++) {
         Robot robot;
+        //allocate with new
         do {robot = Robot();}
         while (!isEmpty (robot));
         //hej

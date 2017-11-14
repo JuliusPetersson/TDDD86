@@ -9,6 +9,8 @@
 #include "mainwindow.h"
 #include "utilities.h"
 
+
+
 int main(int argc, char *argv[]) {
     QApplication a(argc, argv);
 
@@ -16,6 +18,5 @@ int main(int argc, char *argv[]) {
 
     MainWindow view; // create main window
     view.show();     // display main window
-
     return a.exec(); // start Qt event loop
 }

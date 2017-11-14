@@ -69,7 +69,7 @@ public:
     Hero getHero () const;
 
 private:
-    std::vector<Robot> robots;  // the robots
+    std::vector<Robot*> robots;  // the robots
     Hero hero;                  // the hero
 
     // private helpers

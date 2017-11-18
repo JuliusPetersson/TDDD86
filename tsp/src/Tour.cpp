@@ -159,7 +159,7 @@ void Tour::insertSmallest(Point p)
                 leastRaise = currNodeRaise;
             }
             currNode = currNode->next;
-        }while((currNode != firstNode));
+        }while((currNode->next != firstNode));
 
         Node* inNode = new Node(p, closestNode->next);
         closestNode->next = inNode;
@@ -174,19 +174,19 @@ double Tour::testInterchange(int swapNode){
     double newDistance = 0;
     int counter = 0;
     do{
-        if(counter == (swapNode - 1)){
+        if(counter == (swapNode - 1) || (counter == 0)){
             if((swapNode - 1) != -1){
                 //normal case
                 newDistance += currNode->point.distanceTo(currNode->next->next->point);
 
             }else{
                 //if swapNode - 1 = 0 need last to be swapped
-                Node* currNode = firstNode->next;
+                Node* tmpCurrNode = firstNode;
                 do{
-                    currNode = currNode->next;
-                }while(currNode != firstNode->next);
+                    tmpCurrNode = tmpCurrNode->next;
+                }while((tmpCurrNode->next != firstNode));
 
-                newDistance += currNode->point.distanceTo(currNode->next->next->point);
+                newDistance += tmpCurrNode->point.distanceTo(tmpCurrNode->next->next->point);
 
             }
 
@@ -213,7 +213,7 @@ double Tour::testInterchange(int swapNode){
         counter++;
         currNode = currNode->next;
 
-    }while(currNode != firstNode);
+    }while((currNode != firstNode));
 
     return newDistance;
 }
@@ -245,10 +245,10 @@ void Tour::doInterchange(int swapNode){
             memNode->next = currNode->next;
             currNode->next = memNode;
 
-        }else{
-            counter++;
-            currNode = currNode->next;
         }
+        counter++;
+        currNode = currNode->next;
+
 
     }while(currNode != firstNode);
 }
@@ -258,9 +258,13 @@ void Tour::nodeInterchange(Point p){
     insertNearest(p);
 
     for(int i = 0; i < size(); i++){
+        //logic error
         double lengthIfSwap = testInterchange(i);
-        if(0 < lengthIfSwap || lengthIfSwap < distance()){
-            doInterchange(i);
+        cout << i << "     this is i" << endl;
+        //cout << lengthIfSwap << endl;
+        if((0 < lengthIfSwap) && (lengthIfSwap < distance())){
+            //cout << lengthIfSwap << endl;
+            //doInterchange(i);
         }
     }
 }

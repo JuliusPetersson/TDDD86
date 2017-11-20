@@ -8,15 +8,15 @@
 #include <QApplication>
 #include "mainwindow.h"
 #include "utilities.h"
+#include "iostream"
 
 
 
 int main(int argc, char *argv[]) {
     QApplication a(argc, argv);
-
     rand_seed();     // seed random number generator
-
     MainWindow view; // create main window
+
     view.show();     // display main window
     return a.exec(); // start Qt event loop
 }

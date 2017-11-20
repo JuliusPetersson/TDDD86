@@ -12,6 +12,7 @@
 #include "iostream"
 
 MainWindow::MainWindow(QWidget *parent) :
+
     QWidget(parent) {
     // set default size and color
     scene = new QGraphicsScene(0, 0, SCENE_WIDTH, SCENE_HEIGHT);

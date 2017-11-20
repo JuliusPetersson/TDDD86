@@ -75,14 +75,12 @@ MainWindow::~MainWindow() {
  */
 void MainWindow::keyPressEvent(QKeyEvent *e)
 {
-    std::cout << "______________" << std::endl;
     if (!gameOver) { // only process key presses while game is not over
         Hero hero = gameState.getHero();
         Point pt = hero.asPoint();
         bool actionTaken = false;
         bool waiting = false;
 
-        std::cout << "1" << std::endl;
         if (e->modifiers() == Qt::KeypadModifier) {
             switch (e->key()) {
             case Qt::Key_1:
@@ -126,10 +124,8 @@ void MainWindow::keyPressEvent(QKeyEvent *e)
                 QWidget::keyPressEvent(e);
             }
         }
-        std::cout << "2" << std::endl;
         if (actionTaken) { // process results of viable move
             processMove(waiting);
-            std::cout << "3" << std::endl;
         }
     } else {  // game is over - do not process key press
         QWidget::keyPressEvent(e);
@@ -196,6 +192,10 @@ void MainWindow::resetGame() {
     level = 1;
     numberOfRobots = MIN_ROBOTS;
     gameState = GameState(numberOfRobots);
+//    {
+//        GameState tmp(numberOfRobots);
+//        gameState = tmp;
+//    }
     gameState.draw(scene);
     displayScore();
     displayLevel();

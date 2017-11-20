@@ -7,12 +7,13 @@
 #include "utilities.h"
 #include "constants.h"
 
+#include <iostream>
+
 GameState::GameState(){}
 
 GameState::GameState(int numberOfRobots) {
     for (int i = 0; i < numberOfRobots; i++) {
-        Robot *robot;
-        robot = new Robot();
+        Robot* robot = new Robot();
         while (!isEmpty (*robot)){
             delete robot;
             robot = new Robot();
@@ -20,6 +21,12 @@ GameState::GameState(int numberOfRobots) {
         robots.push_back(robot);
     }
     teleportHero();
+}
+
+GameState::~GameState(){
+    for(Robot* robot:robots){
+        delete robot;
+    }
 }
 
 void GameState::draw(QGraphicsScene *scene) const {
@@ -46,14 +53,18 @@ int GameState::countCollisions() {
         bool hitJunk = robots[i]->isJunk();
         bool collision = (countRobotsAt (*robots[i]) > 1);
         if (hitJunk || collision) {
-            if (!hitJunk) robots.push_back (new Junk(*robots[i]));
-            robots[i] = robots[robots.size() - 1];
-            robots.pop_back();
-            numberDestroyed++;
-        } else i++;
+            if (!hitJunk){
+                robots.push_back (new Junk(*robots[i]));
+                delete robots[i];
+                robots[i] = robots[robots.size() - 1];
+                robots.pop_back();
+                numberDestroyed++;
+            }}
+        i++;
     }
     return numberDestroyed;
 }
+
 
 bool GameState::anyRobotsLeft() const {
     for (int i = 0; i < robots.size(); i++){
@@ -94,7 +105,7 @@ bool GameState::isEmpty(const Unit& unit) const {
     return countRobotsAt(unit) == 0;
 }
 
-/*
+/*robots
  * Is there junk at unit?
  */
 /*bool GameState::junkAt(const Unit& unit) const {

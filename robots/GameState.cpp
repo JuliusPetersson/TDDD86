@@ -23,6 +23,15 @@ GameState::GameState(int numberOfRobots) {
     teleportHero();
 }
 
+GameState& GameState::operator=(const GameState &other){
+    while(robots.size() > 0){
+        robots.pop_back();
+    }
+    for (Robot* robot:other.robots){
+        robots.push_back(new Robot(*robot));
+    }
+}
+
 GameState::~GameState(){
     for(Robot* robot:robots){
         delete robot;

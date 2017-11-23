@@ -22,7 +22,7 @@ public:
     GameState();
     GameState(int numberOfRobots);
 
-    GameState &operator =(const GameState &other);
+    GameState &operator=(const GameState &other);
 
     /*
      * Destructor

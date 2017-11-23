@@ -22,6 +22,7 @@ public:
     bool isJunk() const override;
     void moveTowards(const Unit& u) override;
     bool attacks(const Unit& u) const override;
+    virtual Junk* clone() const override;
 };
 
 #endif // JUNK_H

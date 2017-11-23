@@ -11,6 +11,13 @@
 
 GameState::GameState(){}
 
+GameState::GameState(const GameState &other){
+    for (Robot* robot:other.robots){
+        robots.push_back(robot->clone());
+    }
+    hero = other.hero;
+}
+
 GameState::GameState(int numberOfRobots) {
     for (int i = 0; i < numberOfRobots; i++) {
         Robot* robot = new Robot();
@@ -24,13 +31,23 @@ GameState::GameState(int numberOfRobots) {
 }
 
 GameState& GameState::operator=(const GameState &other){
+    if (&other == this)
+        return *this;
     while(robots.size() > 0){
+        delete robots[robots.size()-1];
         robots.pop_back();
     }
     for (Robot* robot:other.robots){
-        robots.push_back(new Robot(*robot));
+        robots.push_back(robot->clone());
     }
+
+    hero = other.hero;
+//    GameState tmp(other);
+//    std::swap(robots, tmp.robots);
+//    std::swap(hero, other.hero);
+    return *this;
 }
+
 
 GameState::~GameState(){
     for(Robot* robot:robots){

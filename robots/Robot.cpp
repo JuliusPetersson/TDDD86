@@ -18,3 +18,6 @@ void Robot::draw(QGraphicsScene *scene) const {
 bool Robot::isJunk() const{
     return false;
 }
+Robot* Robot::clone() const{
+    return new Robot(*this);
+}

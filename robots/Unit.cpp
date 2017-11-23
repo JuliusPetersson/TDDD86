@@ -57,6 +57,11 @@ double Unit::distanceTo(const Unit& u) const {
     return sqrt(dx * dx + dy * dy);
 }
 
+void Unit::draw(QGraphicsScene* scene) const{}
+
+Unit* Unit::clone() const{
+    return new Unit(*this);
+}
 /*
  * Put this unit inside playing field if outside
  */

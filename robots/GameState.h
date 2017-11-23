@@ -20,6 +20,7 @@
 class GameState {
 public:
     GameState();
+    GameState(const GameState &other);
     GameState(int numberOfRobots);
 
     GameState &operator=(const GameState &other);

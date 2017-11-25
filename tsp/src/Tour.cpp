@@ -260,10 +260,10 @@ void Tour::nodeInterchange(Point p){
     for(int i = 0; i < size(); i++){
         //logic error
         double lengthIfSwap = testInterchange(i);
-        cout << i << "     this is i" << endl;
+        //(cout << i << "     this is i" << endl;
         //cout << lengthIfSwap << endl;
         if((0 < lengthIfSwap) && (lengthIfSwap < distance())){
-            //cout << lengthIfSwap << endl;
+            cout << lengthIfSwap << endl;
             //doInterchange(i);
         }
     }

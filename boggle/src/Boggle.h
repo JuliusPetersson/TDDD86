@@ -22,6 +22,9 @@ public:
     const int BOARD_SIZE = 4;
     // TODO: decide the public member functions and declare them
     Boggle();
+    void draw() const;
+    void juliusForce();
+    void forceSetup();
 private:
     Grid<char> board;
     // TODO: decide the private member variables/functions and declare them

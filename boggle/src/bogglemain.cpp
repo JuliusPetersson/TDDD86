@@ -30,6 +30,9 @@ int main() {
     Boggle boggle;
     while (true) {
         playOneGame(boggle);
+        boggle.juliusForce();
+        boggle.draw();
+        boggle.forceSetup();
         cout << endl;
         if (!yesOrNo("Play again (Y/N)? ")) {
             break;

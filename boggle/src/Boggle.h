@@ -7,8 +7,10 @@
 #ifndef _boggle_h
 #define _boggle_h
 
+#include <array>
 #include <iostream>
 #include <string>
+#include <grid.h>
 // TODO: include any other header files you need
 
 using namespace std;
@@ -18,10 +20,10 @@ public:
     const string DICTIONARY_FILE = "EnglishWords.dat";
     const int MIN_WORD_LENGTH = 4;
     const int BOARD_SIZE = 4;
-
     // TODO: decide the public member functions and declare them
-
+    Boggle();
 private:
+    Grid<char> board;
     // TODO: decide the private member variables/functions and declare them
 
 };

@@ -20,3 +20,17 @@ static string CUBES[NUM_CUBES] = {        // the letters on all 6 sides of every
 };
 
 // TODO: implement the members you declared in Boggle.h
+Boggle:: Boggle(){
+    int x,y, randomNr;
+    board = Grid<char>(BOARD_SIZE,BOARD_SIZE);
+
+    for (int i = 0; i < NUM_CUBES; i++){
+        x = i%BOARD_SIZE;
+        y = i/BOARD_SIZE;
+
+        randomNr = randomInteger(0, BOARD_SIZE);
+        board[x][y] = CUBES[i][randomNr];
+    }
+
+    shuffle(board);
+}

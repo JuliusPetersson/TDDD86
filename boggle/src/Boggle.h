@@ -11,6 +11,7 @@
 #include <iostream>
 #include <string>
 #include <grid.h>
+#include "lexicon.h"
 // TODO: include any other header files you need
 
 using namespace std;
@@ -22,11 +23,17 @@ public:
     const int BOARD_SIZE = 4;
     // TODO: decide the public member functions and declare them
     Boggle();
+    bool evaluateWord(string);
     void draw() const;
+    bool inputWord();
+    bool isOnBoard(string) const;
     void juliusForce();
     void forceSetup();
+    bool isOnBoard(int, int, string);
 private:
     Grid<char> board;
+    vector<string> humanWords;
+    Lexicon wordList;
     // TODO: decide the private member variables/functions and declare them
 
 };

@@ -15,6 +15,12 @@
  * Plays one game of Boggle using the given boggle game state object.
  */
 void playOneGame(Boggle& boggle) {
+    boggle.juliusForce();
+    boggle.draw();
+    while (boggle.inputWord()){
+
+    }
+
     // TODO: implement this function (and add any other functions you like to help you)
 
 }

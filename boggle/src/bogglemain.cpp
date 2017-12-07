@@ -28,11 +28,10 @@ int main() {
 
     // play games repeatedly until user decides to quit
     Boggle boggle;
+
+    boggle.juliusForce();
     while (true) {
         playOneGame(boggle);
-        boggle.juliusForce();
-        boggle.draw();
-        boggle.forceSetup();
         cout << endl;
         if (!yesOrNo("Play again (Y/N)? ")) {
             break;

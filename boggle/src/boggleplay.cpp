@@ -17,6 +17,7 @@
 void playOneGame(Boggle& boggle) {
     boggle.juliusForce();
     boggle.draw();
+    string s = "hej";
     while (boggle.inputWord()){
 
     }

@@ -55,23 +55,18 @@ char readLetter() {
 //write this propperly its not right, needs like a string contains fuction or sumthin
 string readWord() {
     string s;
-
     std::getline(std::cin,s);
-
     for (unsigned int j = 0; j < s.size(); j++){
-        for (unsigned int i = 0; i < U_ALPHABET.size(); i++){
-            if (U_ALPHABET ==toUpper(s[j])) return s;
-        }
         s[j] = toUpper(s[j]);
     }
 
-    return "dadda";
+    return s;
 }
 
 bool Boggle:: evaluateWord(string word){
+    if(!(wordList.contains(word)) || (word.size() < 4)) return false;
     for (string i:humanWords){
-        std:: cout << word <<  std::endl;
-        if (i == word || !(wordList.contains(word)) || word.size() < 3) return false;
+        if (i == word) return false;
     }
     return true;
 }
@@ -81,52 +76,64 @@ bool Boggle:: inputWord(){
     do{
         cout << "enter your pathetic word" << endl;
         s = readWord();
-        std::cout << s << std::endl;
         if (s == "") {
             return false;
         }else if((!evaluateWord(s))){
             cout << "invalid word" << endl;
         }
     }while(!evaluateWord(s));
-    humanWords.push_back(s);
+
+
+    if(isOnBoard(s))humanWords.push_back(s);
+    else{
+        std::cout << "not on board" << std::endl;
+    }
     return true;
 }
 
 bool Boggle:: isOnBoard(string word) const{
+    int x,y;
+    bool onboard;
+    for (int i = 0; i < NUM_CUBES; i++){
+        x = i%BOARD_SIZE;
+        y = i/BOARD_SIZE;
 
-
-    //string s;
-    //for (unsigned int i = 0; i < s.size(); i++){
-        //s[i] = word[i];
-      //  if (!wordList.containsPrefix(s)) return false;
-    //}
-    //if (wordList.contains(s)) return true;
-
-    //return false;
+        if (board[x][y] == word[0]){
+            onboard = isNeighbour(x,y,word.substr(1));
+            if (onboard) return true;
+        }
+    }
+    return false;
 }
 
-bool Boggle::isOnBoard(int letterX, int letterY, string word){
+bool Boggle::isNeighbour(int letterX, int letterY, string word) const{
+    if (word.size()==0) return true;
     for(int x = -1; x < 2; x++){
 
         for(int y = -1; y < 2; y++){
+            if((!(letterX+x < 0 || BOARD_SIZE<=letterX+x))&&
+                    (!(letterY+y < 0 || BOARD_SIZE<=letterY+y))&&
+                    (!(y == 0 && x == 0))&&
+                    (word[0] == board[letterX+x][letterY+y])){
 
-            if(!(letterX+x < 0 || BOARD_SIZE<letterX+x)){
-
-                if(!(letterY+y < 0 || BOARD_SIZE<letterY+y)){
-
-                    if (!(y == 0 && x == 0)){
-
-                        if(word[1] == board[y][x]){
-
-                            if(isOnBoard(letterX+x,letterY+y, word.substr(1))) return true;
-                        }
-                    }
-                }
+                if(isNeighbour(letterX+x,letterY+y, word.substr(1))) return true;
             }
         }
     }
     return false;
 }
+/*
+
+struct Cube{
+    char c;
+    bool visited = false;
+} cubeArray[NUM_CUBES];
+*/
+struct Cube{
+    char c;
+    bool visited = false;
+}cubeGrid[4][4];
+
 
 Boggle:: Boggle(){
     int x,y, randomNr;
@@ -147,7 +154,7 @@ Boggle:: Boggle(){
 void Boggle:: draw() const{
     for (int y = 0; y < BOARD_SIZE; y++){
         for (int x = 0; x < BOARD_SIZE; x++){
-            std::cout << board.get(y,x);
+            std::cout << board.get(x,y);
         }
         std::cout << "\n";
     }
@@ -177,7 +184,7 @@ void Boggle:: juliusForce(){
     string rows[] = {"FYCL", "IOMG", "ORIL","HJHU"};
     for (int y = 0; y < BOARD_SIZE; y++){
         for(int x = 0; x < BOARD_SIZE; x++){
-            board.set(y,x,rows[y][x]);
+            board.set(x,y,rows[y][x]);
         }
     }
 }

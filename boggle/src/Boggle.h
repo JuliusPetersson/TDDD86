@@ -30,6 +30,7 @@ public:
     void juliusForce();
     void forceSetup();
     bool isOnBoard(int, int, string);
+    bool isNeighbour(int letterX, int letterY, string word) const;
 private:
     Grid<char> board;
     vector<string> humanWords;

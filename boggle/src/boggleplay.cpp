@@ -17,14 +17,25 @@
 void playOneGame(Boggle& boggle) {
     boggle.juliusForce();
     boggle.draw();
-    string s = "hej";
     while (boggle.inputWord()){
-
+        boggle.updateHumansPoints();
+        std:: cout << "\n" << "Your words: "<< std:: endl;
+        boggle.printHumanwords();
+        std:: cout << "\n\n\n" << "Your points was:   "<< boggle.humanPoints <<  std:: endl;
     }
-
-    // TODO: implement this function (and add any other functions you like to help you)
-
+    boggle.generateRobotWords();
+    boggle.updateRobotPoints();
+    if(boggle.robotPoints > boggle.humanPoints){
+        std:: cout << "AHAHAH YOU LOST SUCKER!!!!  " << "  MY WORDS WAS:   "<< std:: endl;
+        boggle.printRobotWords();
+        std:: cout << "MY SCORE WAS: "<< boggle.robotPoints << std:: endl;
+    }else{
+        std:: cout << "FINE YOU WON THIS TIME! I WILL REMEMBER THIS, IN THE FIFTH OF NOVEMEBER!" << "  MY WORDS WAS:   "<< std:: endl;
+        boggle.printRobotWords();
+        std:: cout << " MY SCORE WAS: "<< boggle.robotPoints << std:: endl;
+    }
 }
+//implement reset
 
 /*
  * Erases all currently visible text from the output console.

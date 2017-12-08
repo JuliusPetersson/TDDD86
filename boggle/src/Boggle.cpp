@@ -128,15 +128,79 @@ bool Boggle::isNeighbour(int letterX, int letterY, string word) {
     board[letterX][letterY].visited = false;
     return false;
 }
-/*
 
-struct Cube{
-    char c;
-    bool visited = false;
-} cubeArray[NUM_CUBES];
-*/
+void Boggle:: robotLetterSearch(int letterX, int letterY, string word){
+    board[letterX][letterY].visited = true;
+    word = word + board[letterX][letterY].c;
+
+    if (wordList.contains(word)&&evaluateWord(word)){
+        robotWords.insert(word);
+    }
+
+    for(int x = -1; x < 2; x++){
+        for(int y = -1; y < 2; y++){
+            if((!(letterX+x < 0 || BOARD_SIZE<=letterX+x))&&
+                    (!(letterY+y < 0 || BOARD_SIZE<=letterY+y))&&
+                    (wordList.containsPrefix(word))&&
+                    !(board[letterX+x][letterY+y].visited)){
+
+
+                robotLetterSearch(letterX+x, letterY+y, word);
+
+            }
+        }
+    }
+    board[letterX][letterY].visited = false;
+}
+
+void Boggle:: removeUsedWords(){
+    for (string i: humanWords){
+        if (robotWords.find(i) != robotWords.end()){
+            robotWords.erase(i);
+        }
+    }
+
+}
+
+void Boggle :: generateRobotWords(){
+    for(int x = 0; x < BOARD_SIZE; x++){
+        for(int y = 0; y < BOARD_SIZE; y++){
+            robotLetterSearch(x,y, "");
+        }
+    }
+    removeUsedWords();
+}
+
+void Boggle :: printRobotWords(){
+    std::cout << "my words puny human:\n";
+    for (string s : robotWords){
+        std::cout << s << "\n";
+    }
+}
+
+void Boggle:: printHumanwords(){
+    for (string i:humanWords){
+        std::cout << i << std::endl;
+    }
+}
+
+void Boggle:: updateHumansPoints(){
+    humanPoints = 0;
+    for (string i:humanWords){
+        humanPoints += i.size() - 3;
+    }
+}
+
+void Boggle:: updateRobotPoints(){
+    robotPoints = 0;
+    for (string i:robotWords){
+        robotPoints += i.size() - 3;
+    }
+}
 
 Boggle:: Boggle(){
+    robotWords = set<string>();
+
     int x,y, randomNr;
     board = Grid<Cube>(BOARD_SIZE,BOARD_SIZE);
 

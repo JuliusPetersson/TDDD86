@@ -11,6 +11,7 @@
 #include <iostream>
 #include <string>
 #include <grid.h>
+#include <set>
 #include "lexicon.h"
 // TODO: include any other header files you need
 
@@ -30,6 +31,14 @@ public:
     void juliusForce();
     void forceSetup();
     bool isNeighbour(int letterX, int letterY, string word);
+    void robotLetterSearch(int letterX, int letterY, string word);
+    void generateRobotWords();
+    void printRobotWords();
+    void printHumanwords();
+    void updateHumansPoints();
+    void updateRobotPoints();
+    int humanPoints;
+    int robotPoints;
 private:
     struct Cube{
 
@@ -37,8 +46,11 @@ private:
         bool visited;
     };
     Grid<Cube> board;
+    void removeUsedWords();
     vector<string> humanWords;
+    set<string> robotWords;
     Lexicon wordList;
+
     // TODO: decide the private member variables/functions and declare them
 
 };

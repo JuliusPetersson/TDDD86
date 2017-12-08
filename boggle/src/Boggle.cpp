@@ -30,7 +30,6 @@ static string CUBES[NUM_CUBES] = {        // the letters on all 6 sides of every
 
 
 
-
 char toUpper(char c){
     for (unsigned int i = 0; i < U_ALPHABET.size(); i++){
         if (L_ALPHABET[i] == c) return U_ALPHABET[i];
@@ -91,14 +90,14 @@ bool Boggle:: inputWord(){
     return true;
 }
 
-bool Boggle:: isOnBoard(string word) const{
+bool Boggle:: isOnBoard(string word) {
     int x,y;
     bool onboard;
     for (int i = 0; i < NUM_CUBES; i++){
         x = i%BOARD_SIZE;
         y = i/BOARD_SIZE;
 
-        if (board[x][y] == word[0]){
+        if (board[x][y].c == word[0]){
             onboard = isNeighbour(x,y,word.substr(1));
             if (onboard) return true;
         }
@@ -106,20 +105,27 @@ bool Boggle:: isOnBoard(string word) const{
     return false;
 }
 
-bool Boggle::isNeighbour(int letterX, int letterY, string word) const{
-    if (word.size()==0) return true;
+bool Boggle::isNeighbour(int letterX, int letterY, string word) {
+    board[letterX][letterY].visited = true;
+    if (word.size()==0){
+        board[letterX][letterY].visited = false;
+        return true;
+    }
     for(int x = -1; x < 2; x++){
-
         for(int y = -1; y < 2; y++){
             if((!(letterX+x < 0 || BOARD_SIZE<=letterX+x))&&
                     (!(letterY+y < 0 || BOARD_SIZE<=letterY+y))&&
-                    (!(y == 0 && x == 0))&&
-                    (word[0] == board[letterX+x][letterY+y])){
+                    (word[0] == board[letterX+x][letterY+y].c)&&
+                    !(board[letterX+x][letterY+y].visited)){
 
-                if(isNeighbour(letterX+x,letterY+y, word.substr(1))) return true;
+                if(isNeighbour(letterX+x,letterY+y, word.substr(1))){
+                    board[letterX][letterY].visited = false;
+                    return true;
+                }
             }
         }
     }
+    board[letterX][letterY].visited = false;
     return false;
 }
 /*
@@ -129,22 +135,17 @@ struct Cube{
     bool visited = false;
 } cubeArray[NUM_CUBES];
 */
-struct Cube{
-    char c;
-    bool visited = false;
-}cubeGrid[4][4];
-
 
 Boggle:: Boggle(){
     int x,y, randomNr;
-    board = Grid<char>(BOARD_SIZE,BOARD_SIZE);
+    board = Grid<Cube>(BOARD_SIZE,BOARD_SIZE);
 
     for (int i = 0; i < NUM_CUBES; i++){
         x = i%BOARD_SIZE;
         y = i/BOARD_SIZE;
 
         randomNr = randomInteger(0, BOARD_SIZE);
-        board[x][y] = CUBES[i][randomNr];
+        board[x][y].c = CUBES[i][randomNr];
     }
     humanWords = vector<string>();
     shuffle(board);
@@ -154,7 +155,7 @@ Boggle:: Boggle(){
 void Boggle:: draw() const{
     for (int y = 0; y < BOARD_SIZE; y++){
         for (int x = 0; x < BOARD_SIZE; x++){
-            std::cout << board.get(x,y);
+            std::cout << board.get(x,y).c;
         }
         std::cout << "\n";
     }
@@ -174,7 +175,7 @@ void Boggle:: forceSetup(){
             }
             while (c == '0');
 
-            board.set(y,x,c);
+            board[x][y].c = c;
         }
         std::cout << "\n";
     }
@@ -184,7 +185,7 @@ void Boggle:: juliusForce(){
     string rows[] = {"FYCL", "IOMG", "ORIL","HJHU"};
     for (int y = 0; y < BOARD_SIZE; y++){
         for(int x = 0; x < BOARD_SIZE; x++){
-            board.set(x,y,rows[y][x]);
+            board[x][y].c = rows[y][x];
         }
     }
 }

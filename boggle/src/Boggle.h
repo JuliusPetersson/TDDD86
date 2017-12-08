@@ -26,13 +26,17 @@ public:
     bool evaluateWord(string);
     void draw() const;
     bool inputWord();
-    bool isOnBoard(string) const;
+    bool isOnBoard(string);
     void juliusForce();
     void forceSetup();
-    bool isOnBoard(int, int, string);
-    bool isNeighbour(int letterX, int letterY, string word) const;
+    bool isNeighbour(int letterX, int letterY, string word);
 private:
-    Grid<char> board;
+    struct Cube{
+
+        char c;
+        bool visited;
+    };
+    Grid<Cube> board;
     vector<string> humanWords;
     Lexicon wordList;
     // TODO: decide the private member variables/functions and declare them

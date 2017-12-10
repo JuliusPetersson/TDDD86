@@ -15,7 +15,26 @@
  * Plays one game of Boggle using the given boggle game state object.
  */
 void playOneGame(Boggle& boggle) {
-    boggle.juliusForce();
+    std::cout << "do you wish to randomize a board?(y/n)" << std::endl;
+
+    string c;
+    bool correctInput;
+    do{
+        std::getline(std::cin, c);
+        correctInput = c == "y" || c == "n";
+        if(!correctInput){
+            std::cout << "enter y or n" << std::endl;
+        }
+    }while(!correctInput);
+
+
+    if (c == "y"){
+        boggle.randomizeBoard();
+    }
+    else{
+        boggle.forceSetup();
+    }
+
     boggle.draw();
     while (boggle.inputWord()){
         boggle.updateHumansPoints();
@@ -30,7 +49,7 @@ void playOneGame(Boggle& boggle) {
         boggle.printRobotWords();
         std:: cout << "MY SCORE WAS: "<< boggle.robotPoints << std:: endl;
     }else{
-        std:: cout << "FINE YOU WON THIS TIME! I WILL REMEMBER THIS, IN THE FIFTH OF NOVEMEBER!" << "  MY WORDS WAS:   "<< std:: endl;
+        std:: cout << "FINE YOU WON THIS TIME! I WILL REMEMBER THIS!" << "  MY WORDS WAS:   "<< std:: endl;
         boggle.printRobotWords();
         std:: cout << " MY SCORE WAS: "<< boggle.robotPoints << std:: endl;
     }

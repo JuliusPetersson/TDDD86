@@ -28,8 +28,6 @@ int main() {
 
     // play games repeatedly until user decides to quit
     Boggle boggle;
-
-    boggle.juliusForce();
     while (true) {
         playOneGame(boggle);
         cout << endl;

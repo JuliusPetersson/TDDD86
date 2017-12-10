@@ -26,9 +26,6 @@ static string CUBES[NUM_CUBES] = {        // the letters on all 6 sides of every
                                           "EIOSST", "ELRTTY", "HIMNQU", "HLNNRZ"
                                  };
 
-// TODO: implement the members you declared in Boggle.h
-
-
 
 char toUpper(char c){
     for (unsigned int i = 0; i < U_ALPHABET.size(); i++){
@@ -37,21 +34,17 @@ char toUpper(char c){
     return c;
 }
 
-//reads upper/lower case letters from the input buffer,
-//return upper case letter
-//returns the charachter zero to indicate invalid input
 char readLetter() {
-    char c;
-    std::cin >> c;
+    string s;
+    std::getline(std::cin,s);
 
     for (unsigned int i = 0; i <  U_ALPHABET.size(); i++){
-        if (U_ALPHABET[i] == toUpper(c)) return U_ALPHABET[i];
+        if (U_ALPHABET[i] == toUpper(s[0])) return U_ALPHABET[i];
     }
 
     return '0';
 }
 
-//write this propperly its not right, needs like a string contains fuction or sumthin
 string readWord() {
     string s;
     std::getline(std::cin,s);
@@ -60,6 +53,13 @@ string readWord() {
     }
 
     return s;
+}
+
+void Boggle:: resetGame(){
+    humanWords.clear();
+    robotWords.clear();
+    robotPoints = 0;
+    humanPoints = 0;
 }
 
 bool Boggle:: evaluateWord(string word){
@@ -82,7 +82,7 @@ bool Boggle:: inputWord(){
         }
     }while(!evaluateWord(s));
 
-
+    std::cout << s << std::endl;
     if(isOnBoard(s))humanWords.push_back(s);
     else{
         std::cout << "not on board" << std::endl;
@@ -198,11 +198,8 @@ void Boggle:: updateRobotPoints(){
     }
 }
 
-Boggle:: Boggle(){
-    robotWords = set<string>();
-
+void Boggle::randomizeBoard(){
     int x,y, randomNr;
-    board = Grid<Cube>(BOARD_SIZE,BOARD_SIZE);
 
     for (int i = 0; i < NUM_CUBES; i++){
         x = i%BOARD_SIZE;
@@ -211,6 +208,15 @@ Boggle:: Boggle(){
         randomNr = randomInteger(0, BOARD_SIZE);
         board[x][y].c = CUBES[i][randomNr];
     }
+}
+
+Boggle:: Boggle(){
+    robotWords = set<string>();
+    board = Grid<Cube>(BOARD_SIZE,BOARD_SIZE);
+    humanPoints = 0;
+    robotPoints = 0;
+    randomizeBoard();
+
     humanWords = vector<string>();
     shuffle(board);
     wordList = Lexicon("EnglishWords.dat");

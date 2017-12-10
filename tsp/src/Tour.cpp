@@ -254,17 +254,12 @@ void Tour::doInterchange(int swapNode){
 }
 
 
-void Tour::nodeInterchange(Point p){
-    insertNearest(p);
-
+void Tour::nodeInterchange(){
     for(int i = 0; i < size(); i++){
-        //logic error
         double lengthIfSwap = testInterchange(i);
-        //(cout << i << "     this is i" << endl;
-        //cout << lengthIfSwap << endl;
         if((0 < lengthIfSwap) && (lengthIfSwap < distance())){
-            cout << lengthIfSwap << endl;
-            //doInterchange(i);
+            //cout << lengthIfSwap << endl;
+            doInterchange(i);
         }
     }
 }

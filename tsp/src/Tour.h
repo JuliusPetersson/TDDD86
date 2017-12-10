@@ -40,10 +40,10 @@ public:
     void insertSmallest(Point p);
 
     /**
-     * @brief nodeInterchange tries all possible combinations of swapping two nodes. Swap if shorter tour
-     * @param Point to be inserted into the tour
+     * @brief nodeInterchange tries all possible combinations of swapping two nodes. Swap if shorter tour. Call on an already existing tour
+     *
      */
-    void nodeInterchange(Point p);
+    void nodeInterchange();
 
 
 private:

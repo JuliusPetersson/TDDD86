@@ -18,7 +18,7 @@
 int main(int argc, char *argv[]) {
     QApplication a(argc, argv);
 
-    string filename = "tsp10.txt";
+    string filename = "tsp100.txt";
     ifstream input;
     input.open(filename);
 
@@ -43,7 +43,7 @@ int main(int argc, char *argv[]) {
     double y;
     while (input >> x >> y) {
         Point p(x, y);
-        tour.nodeInterchange(p);
+        tour.insertNearest(p);
         //tour.insertNearest(p);
         //uncomment the 4 lines below to animate
         tour.draw(scene);
@@ -52,6 +52,7 @@ int main(int argc, char *argv[]) {
         a.processEvents();
     }
     input.close();
+    //tour.nodeInterchange();
 
     // print tour to standard output
     cout << "Tour distance: " << std::fixed << std::setprecision(4)

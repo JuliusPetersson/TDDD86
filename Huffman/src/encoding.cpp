@@ -7,8 +7,14 @@
 // TODO: include any other headers you need
 
 map<int, int> buildFrequencyTable(istream& input) {
-    // TODO: implement this function
     map<int, int> freqTable;
+    int inputChar = input.get();
+    map<int, int>::iterator it = freqTable.find(inputChar);
+    if(it != freqTable.end()){
+        (it->second)++;
+    }else{
+        freqTable.insert(std::pair<int,int>(inputChar,1));
+    }
     return freqTable;
 }
 

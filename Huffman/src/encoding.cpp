@@ -4,23 +4,47 @@
 // TODO: remove this comment header
 
 #include "encoding.h"
+#include "queue"
+#include "HuffmanNode.h"
 // TODO: include any other headers you need
 
 map<int, int> buildFrequencyTable(istream& input) {
     map<int, int> freqTable;
-    int inputChar = input.get();
-    map<int, int>::iterator it = freqTable.find(inputChar);
-    if(it != freqTable.end()){
-        (it->second)++;
-    }else{
-        freqTable.insert(std::pair<int,int>(inputChar,1));
-    }
+    int inputChar = 0;
+    while(inputChar != -1){
+        inputChar = input.get();
+        map<int, int>::iterator it = freqTable.find(inputChar);
+        if(it != freqTable.end()){
+            (it->second)++;
+        }else{
+            freqTable.insert(std::pair<int,int>(inputChar,1));
+        }
+    }freqTable.insert(std::pair<int,int>(inputChar,1));
     return freqTable;
 }
 
 HuffmanNode* buildEncodingTree(const map<int, int> &freqTable) {
-    // TODO: implement this function
-    return nullptr;
+    map<int, int>::const_iterator it;
+    bool setleft = false;
+    priority_queue<HuffmanNode*> prioQueue;
+    HuffmanNode* node = new HuffmanNode(NOT_A_CHAR, 0, nullptr, nullptr);
+    bool setone = false;
+
+    for (it = freqTable.begin(); it != freqTable.end(); it++){
+        prioQueue.push(new HuffmanNode(it->first, it->second, nullptr, nullptr));
+    }
+
+    while(prioQueue.size() != 1){
+        node = new HuffmanNode(NOT_A_CHAR, 0, nullptr, nullptr);
+        node->zero = prioQueue.top();
+        prioQueue.pop();
+        node->one = prioQueue.top();
+        node->count = node->one->count + node->zero->count;
+        prioQueue.pop();
+        prioQueue.push(node);
+    }
+
+    return prioQueue.top();
 }
 
 map<int, string> buildEncodingMap(HuffmanNode* encodingTree) {

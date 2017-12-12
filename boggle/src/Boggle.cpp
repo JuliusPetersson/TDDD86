@@ -62,7 +62,7 @@ void Boggle:: resetGame(){
     humanPoints = 0;
 }
 
-bool Boggle:: evaluateWord(string word){
+bool Boggle:: evaluateWord(string word) const{
     if(!(wordList.contains(word)) || (word.size() < 4)) return false;
     for (string i:humanWords){
         if (i == word) return false;
@@ -82,7 +82,6 @@ bool Boggle:: inputWord(){
         }
     }while(!evaluateWord(s));
 
-    std::cout << s << std::endl;
     if(isOnBoard(s))humanWords.push_back(s);
     else{
         std::cout << "not on board" << std::endl;
@@ -105,7 +104,7 @@ bool Boggle:: isOnBoard(string word) {
     return false;
 }
 
-bool Boggle::isNeighbour(int letterX, int letterY, string word) {
+bool Boggle::isNeighbour(int letterX, int letterY, const string word) {
     board[letterX][letterY].visited = true;
     if (word.size()==0){
         board[letterX][letterY].visited = false;
@@ -171,20 +170,19 @@ void Boggle :: generateRobotWords(){
     removeUsedWords();
 }
 
-void Boggle :: printRobotWords(){
-    std::cout << "my words puny human:\n";
+void Boggle :: printRobotWords() const{
     for (string s : robotWords){
         std::cout << s << "\n";
     }
 }
 
-void Boggle:: printHumanwords(){
+void Boggle:: printHumanwords() const{
     for (string i:humanWords){
         std::cout << i << std::endl;
     }
 }
 
-void Boggle:: updateHumansPoints(){
+void Boggle:: updateHumanPoints(){
     humanPoints = 0;
     for (string i:humanWords){
         humanPoints += i.size() - 3;

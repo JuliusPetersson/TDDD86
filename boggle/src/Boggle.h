@@ -26,7 +26,7 @@ public:
     Boggle();
 
     //checks to see if a word is a valid word
-    bool evaluateWord(string);
+    bool evaluateWord(string) const;
 
     //draw self to board
     void draw() const;
@@ -53,13 +53,13 @@ public:
     void generateRobotWords();
 
     //prints the robots words
-    void printRobotWords();
+    void printRobotWords() const;
 
     //prints the humans words
-    void printHumanwords();
+    void printHumanwords() const;
 
     //generate the humans points
-    void updateHumansPoints();
+    void updateHumanPoints();
 
     //generate the robots points
     void updateRobotPoints();

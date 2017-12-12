@@ -25,22 +25,20 @@ map<int, int> buildFrequencyTable(istream& input) {
 
 HuffmanNode* buildEncodingTree(const map<int, int> &freqTable) {
     map<int, int>::const_iterator it;
-    bool setleft = false;
     priority_queue<HuffmanNode*> prioQueue;
     HuffmanNode* node = new HuffmanNode(NOT_A_CHAR, 0, nullptr, nullptr);
-    bool setone = false;
 
     for (it = freqTable.begin(); it != freqTable.end(); it++){
         prioQueue.push(new HuffmanNode(it->first, it->second, nullptr, nullptr));
     }
 
-    while(prioQueue.size() != 1){
+    while(prioQueue.size() > 1){
         node = new HuffmanNode(NOT_A_CHAR, 0, nullptr, nullptr);
         node->zero = prioQueue.top();
         prioQueue.pop();
         node->one = prioQueue.top();
-        node->count = node->one->count + node->zero->count;
         prioQueue.pop();
+        node->count = node->one->count + node->zero->count;
         prioQueue.push(node);
     }
 

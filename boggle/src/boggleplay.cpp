@@ -37,19 +37,19 @@ void playOneGame(Boggle& boggle) {
 
     boggle.draw();
     while (boggle.inputWord()){
-        boggle.updateHumansPoints();
-        std:: cout << "\n" << "Your words: "<< std:: endl;
+        boggle.updateHumanPoints();
+        std:: cout << "\n" << "Your words are: "<< std:: endl;
         boggle.printHumanwords();
-        std:: cout << "\n\n\n" << "Your points was:   "<< boggle.humanPoints <<  std:: endl;
+        std:: cout << "\n" << "Your points are:   "<< boggle.humanPoints <<  std:: endl;
     }
     boggle.generateRobotWords();
     boggle.updateRobotPoints();
     if(boggle.robotPoints > boggle.humanPoints){
-        std:: cout << "AHAHAH YOU LOST SUCKER!!!!  " << "  MY WORDS WAS:   "<< std:: endl;
+        std:: cout << "AHAHAH YOU LOST SUCKER!!!!  " << "\nMY WORDS WERE:   "<< std:: endl;
         boggle.printRobotWords();
         std:: cout << "MY SCORE WAS: "<< boggle.robotPoints << std:: endl;
     }else{
-        std:: cout << "FINE YOU WON THIS TIME! I WILL REMEMBER THIS!" << "  MY WORDS WAS:   "<< std:: endl;
+        std:: cout << "FINE YOU WON THIS TIME! I WILL REMEMBER THIS!" << " \nMY WORDS WERE:   "<< std:: endl;
         boggle.printRobotWords();
         std:: cout << " MY SCORE WAS: "<< boggle.robotPoints << std:: endl;
     }

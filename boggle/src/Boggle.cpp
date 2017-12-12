@@ -15,8 +15,6 @@
 #include "string"
 #include "lexicon.h"
 
-static const string L_ALPHABET = "abcdefghijklmnopqrstuvwxyz";
-static const string U_ALPHABET = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
 static const int NUM_CUBES = 16;   // the number of cubes in the game
 static const int CUBE_SIDES = 6;   // the number of sides on each cube
 static string CUBES[NUM_CUBES] = {        // the letters on all 6 sides of every cube
@@ -27,33 +25,8 @@ static string CUBES[NUM_CUBES] = {        // the letters on all 6 sides of every
                                  };
 
 
-char toUpper(char c){
-    for (unsigned int i = 0; i < U_ALPHABET.size(); i++){
-        if (L_ALPHABET[i] == c) return U_ALPHABET[i];
-    }
-    return c;
-}
 
-char readLetter() {
-    string s;
-    std::getline(std::cin,s);
 
-    for (unsigned int i = 0; i <  U_ALPHABET.size(); i++){
-        if (U_ALPHABET[i] == toUpper(s[0])) return U_ALPHABET[i];
-    }
-
-    return '0';
-}
-
-string readWord() {
-    string s;
-    std::getline(std::cin,s);
-    for (unsigned int j = 0; j < s.size(); j++){
-        s[j] = toUpper(s[j]);
-    }
-
-    return s;
-}
 
 void Boggle:: resetGame(){
     humanWords.clear();
@@ -62,7 +35,7 @@ void Boggle:: resetGame(){
     humanPoints = 0;
 }
 
-bool Boggle:: evaluateWord(string word) const{
+bool Boggle:: evaluateWord(const string word) const{
     if(!(wordList.contains(word)) || (word.size() < 4)) return false;
     for (string i:humanWords){
         if (i == word) return false;
@@ -70,26 +43,19 @@ bool Boggle:: evaluateWord(string word) const{
     return true;
 }
 
-bool Boggle:: inputWord(){
-    string s;
-    do{
-        cout << "enter your pathetic word" << endl;
-        s = readWord();
-        if (s == "") {
-            return false;
-        }else if((!evaluateWord(s))){
-            cout << "invalid word" << endl;
-        }
-    }while(!evaluateWord(s));
+bool Boggle:: inputWord(const string s){
 
-    if(isOnBoard(s))humanWords.push_back(s);
-    else{
-        std::cout << "not on board" << std::endl;
+    if (evaluateWord(s)&&isOnBoard(s)){
+        humanWords.insert(s);
+        return true;
     }
-    return true;
+    else{
+        return false;
+    }
+
 }
 
-bool Boggle:: isOnBoard(string word) {
+bool Boggle:: isOnBoard(const string word) {
     int x,y;
     bool onboard;
     for (int i = 0; i < NUM_CUBES; i++){
@@ -170,16 +136,13 @@ void Boggle :: generateRobotWords(){
     removeUsedWords();
 }
 
-void Boggle :: printRobotWords() const{
-    for (string s : robotWords){
-        std::cout << s << "\n";
-    }
+set<string> Boggle :: getHumanWords() const{
+    return humanWords;
 }
 
-void Boggle:: printHumanwords() const{
-    for (string i:humanWords){
-        std::cout << i << std::endl;
-    }
+
+set<string> Boggle :: getRobotWords() const{
+    return robotWords;
 }
 
 void Boggle:: updateHumanPoints(){
@@ -215,7 +178,7 @@ Boggle:: Boggle(){
     robotPoints = 0;
     randomizeBoard();
 
-    humanWords = vector<string>();
+    humanWords = set<string>();
     shuffle(board);
     wordList = Lexicon("EnglishWords.dat");
 }
@@ -230,22 +193,15 @@ void Boggle:: draw() const{
     std::cout << std::endl;
 }
 
-void Boggle:: forceSetup(){
-    for (int y = 0; y < BOARD_SIZE; y++){
-        for (int x = 0; x < BOARD_SIZE; x++){
-            std::cout << "enter a letter" << std::endl;
-            char c;
-            do{
-                c = readLetter();
-                if (c == '0'){
-                    std::cout << "invalid input" << std::endl;
-                }
-            }
-            while (c == '0');
+void Boggle:: forceSetup(const string s){
+    int x,y;
+    for (int i = 0; i < NUM_CUBES; i++){
+        x = i%BOARD_SIZE;
+        y = i/BOARD_SIZE;
 
-            board[x][y].c = c;
-        }
-        std::cout << "\n";
+        Cube c = Cube();
+        c.c = s[i];
+        board[x][y] = c;
     }
 }
 

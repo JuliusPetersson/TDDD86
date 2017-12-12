@@ -26,37 +26,31 @@ public:
     Boggle();
 
     //checks to see if a word is a valid word
-    bool evaluateWord(string) const;
+    bool evaluateWord(const string) const;
 
     //draw self to board
     void draw() const;
 
     //allows the user to input a word
-    bool inputWord();
+    bool inputWord(const string);
 
     //checks if a given string is on the board
-    bool isOnBoard(string);
+    bool isOnBoard(const string);
 
     //debbuging setup, sets the board to a specific setup
     void juliusForce();
 
     //allows the user to force a setup
-    void forceSetup();
-
-    //recusivly look through all neghbours of letter to see if word can be created
-    bool isNeighbour(int letterX, int letterY, string word);
-
-    //recursively look through neighbours and adds all valid words to the robots word list
-    void robotLetterSearch(int letterX, int letterY, string word);
+    void forceSetup(const string);
 
     //generates the robots words
     void generateRobotWords();
 
-    //prints the robots words
-    void printRobotWords() const;
+    //get human words
+    set<string> getHumanWords() const;
 
-    //prints the humans words
-    void printHumanwords() const;
+    //get robot words
+    set<string> getRobotWords() const;
 
     //generate the humans points
     void updateHumanPoints();
@@ -76,6 +70,14 @@ public:
     //the robots points
     int robotPoints;
 private:
+    //recusivly look through all neghbours of letter to see if word can be created
+    bool isNeighbour(int letterX, int letterY, const string word);
+
+    //recursively look through neighbours and adds all valid words to the robots word list
+    void robotLetterSearch(int letterX, int letterY, const string word);
+
+    void removeUsedWords();
+
     struct Cube{
 
         char c;
@@ -83,12 +85,9 @@ private:
     };
 
     Grid<Cube> board;
-    void removeUsedWords();
-    vector<string> humanWords;
+    set<string> humanWords;
     set<string> robotWords;
     Lexicon wordList;
-
-    // TODO: decide the private member variables/functions and declare them
 
 };
 

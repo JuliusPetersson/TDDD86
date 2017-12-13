@@ -11,6 +11,7 @@
 map<int, int> buildFrequencyTable(istream& input) {
     map<int, int> freqTable;
     int inputChar = 0;
+
     while(inputChar != -1){
         inputChar = input.get();
         map<int, int>::iterator it = freqTable.find(inputChar);
@@ -20,6 +21,7 @@ map<int, int> buildFrequencyTable(istream& input) {
             freqTable.insert(std::pair<int,int>(inputChar,1));
         }
     }freqTable.insert(std::pair<int,int>(inputChar,1));
+
     return freqTable;
 }
 
@@ -33,11 +35,11 @@ HuffmanNode* buildEncodingTree(const map<int, int> &freqTable) {
     map<int, int>::const_iterator it;
     priority_queue<HuffmanNode*,vector<HuffmanNode*>, compare> prioQueue;
     HuffmanNode* node = new HuffmanNode(NOT_A_CHAR, 0, nullptr, nullptr);
-    std::cout << "hej jag existerar"<<std::endl;
 
     for (it = freqTable.begin(); it != freqTable.end(); it++){
         prioQueue.push(new HuffmanNode(it->first, it->second, nullptr, nullptr));
     }
+
     while(prioQueue.size() > 1){
         node = new HuffmanNode(NOT_A_CHAR, 0, nullptr, nullptr);
         node->zero = prioQueue.top();
@@ -80,7 +82,23 @@ map<int, string> buildEncodingMap(HuffmanNode* encodingTree) {
 }
 
 void encodeData(istream& input, const map<int, string> &encodingMap, obitstream& output) {
-    // TODO: implement this function
+    int inputChar = 0;
+    string result;
+    while(inputChar != -1){
+        inputChar = input.get();
+        result += encodingMap.find(inputChar)->second;
+
+    }
+
+    for (char c : result){
+        if(c == '1'){
+            output.writeBit(1);
+        }
+        else{
+            output.writeBit(0);
+        }
+    }
+
 }
 
 void decodeData(ibitstream& input, HuffmanNode* encodingTree, ostream& output) {

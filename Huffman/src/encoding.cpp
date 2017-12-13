@@ -23,15 +23,21 @@ map<int, int> buildFrequencyTable(istream& input) {
     return freqTable;
 }
 
+struct compare{
+    bool operator()(const HuffmanNode* n1, const HuffmanNode* n2){
+        return  *n1 < *n2;
+    }
+};
+
 HuffmanNode* buildEncodingTree(const map<int, int> &freqTable) {
     map<int, int>::const_iterator it;
-    priority_queue<HuffmanNode*> prioQueue;
+    priority_queue<HuffmanNode*,vector<HuffmanNode*>, compare> prioQueue;
     HuffmanNode* node = new HuffmanNode(NOT_A_CHAR, 0, nullptr, nullptr);
+    std::cout << "hej jag existerar"<<std::endl;
 
     for (it = freqTable.begin(); it != freqTable.end(); it++){
         prioQueue.push(new HuffmanNode(it->first, it->second, nullptr, nullptr));
     }
-
     while(prioQueue.size() > 1){
         node = new HuffmanNode(NOT_A_CHAR, 0, nullptr, nullptr);
         node->zero = prioQueue.top();

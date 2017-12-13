@@ -53,7 +53,7 @@ HuffmanNode* buildEncodingTree(const map<int, int> &freqTable) {
     return prioQueue.top();
 }
 
-map<int, string> buildRestOfEncoding(HuffmanNode* encodingTree, string prefix){
+map<int, string> buildRestOfEncodingMap(HuffmanNode* encodingTree, string prefix){
     if(encodingTree->isLeaf()){
         map<int, string> done;
         done.insert(std::pair<int, string>(encodingTree->character, prefix));
@@ -62,8 +62,8 @@ map<int, string> buildRestOfEncoding(HuffmanNode* encodingTree, string prefix){
     else{
         map<int, string> zero, one;
 
-        zero = buildRestOfEncoding(encodingTree->zero, prefix + "0");
-        one = buildRestOfEncoding(encodingTree->one, prefix + "1");
+        zero = buildRestOfEncodingMap(encodingTree->zero, prefix + "0");
+        one = buildRestOfEncodingMap(encodingTree->one, prefix + "1");
 
         for (std::pair<int, string> element : one){
             zero.insert(element);
@@ -76,7 +76,7 @@ map<int, string> buildRestOfEncoding(HuffmanNode* encodingTree, string prefix){
 map<int, string> buildEncodingMap(HuffmanNode* encodingTree) {
     map<int, string> encodingMap;
 
-    encodingMap = buildRestOfEncoding(encodingTree, "");
+    encodingMap = buildRestOfEncodingMap(encodingTree, "");
 
     return encodingMap;
 }
@@ -123,11 +123,17 @@ void decodeData(ibitstream& input, HuffmanNode* encodingTree, ostream& output) {
 }
 
 void compress(istream& input, obitstream& output) {
-    // TODO: implement this function
+    map<int, int> freqTable = buildFrequencyTable(input);
+    HuffmanNode* encodingTree = buildEncodingTree(freqTable);
+    map<int, string> encodingMap = buildEncodingMap(encodingTree);
+    input.clear();
+    input.seekg(0, ios::beg);
+    encodeData(input, encodingMap, output);
+
 }
 
 void decompress(ibitstream& input, ostream& output) {
-    // TODO: implement this function
+
 }
 
 void freeTree(HuffmanNode* node) {

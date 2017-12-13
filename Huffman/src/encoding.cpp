@@ -101,8 +101,25 @@ void encodeData(istream& input, const map<int, string> &encodingMap, obitstream&
 
 }
 
+int findChar(ibitstream& input, HuffmanNode* encodingTree){
+    if(encodingTree->isLeaf()){
+        return encodingTree->character;
+    }
+    else{
+        int in = input.readBit();
+
+        if(in == 1) return findChar(input, encodingTree->one);
+        else return findChar(input, encodingTree->zero);
+    }
+}
+
 void decodeData(ibitstream& input, HuffmanNode* encodingTree, ostream& output) {
-    // TODO: implement this function
+
+    int inchar = 0;
+    do{
+        inchar = findChar(input, encodingTree);
+        if(inchar != -1)output.put(inchar);
+    }while(inchar != -1);
 }
 
 void compress(istream& input, obitstream& output) {

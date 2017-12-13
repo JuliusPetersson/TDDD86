@@ -51,9 +51,31 @@ HuffmanNode* buildEncodingTree(const map<int, int> &freqTable) {
     return prioQueue.top();
 }
 
+map<int, string> buildRestOfEncoding(HuffmanNode* encodingTree, string prefix){
+    if(encodingTree->isLeaf()){
+        map<int, string> done;
+        done.insert(std::pair<int, string>(encodingTree->character, prefix));
+        return done;
+    }
+    else{
+        map<int, string> zero, one;
+
+        zero = buildRestOfEncoding(encodingTree->zero, prefix + "0");
+        one = buildRestOfEncoding(encodingTree->one, prefix + "1");
+
+        for (std::pair<int, string> element : one){
+            zero.insert(element);
+        }
+
+        return zero;
+    }
+}
+
 map<int, string> buildEncodingMap(HuffmanNode* encodingTree) {
-    // TODO: implement this function
     map<int, string> encodingMap;
+
+    encodingMap = buildRestOfEncoding(encodingTree, "");
+
     return encodingMap;
 }
 

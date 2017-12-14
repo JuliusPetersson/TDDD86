@@ -6,22 +6,23 @@
 #include "encoding.h"
 #include "queue"
 #include "HuffmanNode.h"
+#include <cmath>
 // TODO: include any other headers you need
 
 map<int, int> buildFrequencyTable(istream& input) {
     map<int, int> freqTable;
-    int inputChar = 0;
+    int inputChar = input.get();
 
     while(inputChar != -1){
-        inputChar = input.get();
         map<int, int>::iterator it = freqTable.find(inputChar);
         if(it != freqTable.end()){
             (it->second)++;
         }else{
             freqTable.insert(std::pair<int,int>(inputChar,1));
         }
-    }freqTable.insert(std::pair<int,int>(inputChar,1));
-
+        inputChar = input.get();
+    }
+    freqTable.insert(std::pair<int,int>(PSEUDO_EOF,1));
     return freqTable;
 }
 
@@ -84,11 +85,14 @@ map<int, string> buildEncodingMap(HuffmanNode* encodingTree) {
 void encodeData(istream& input, const map<int, string> &encodingMap, obitstream& output) {
     int inputChar = 0;
     string result;
-    while(inputChar != -1){
+    while(!(inputChar == -1 || inputChar == PSEUDO_EOF)){
         inputChar = input.get();
-        result += encodingMap.find(inputChar)->second;
-
+        if(inputChar != -1){
+            result += encodingMap.find(inputChar)->second;
+        }
     }
+
+    result += encodingMap.find(PSEUDO_EOF)->second;
 
     for (char c : result){
         if(c == '1'){
@@ -114,25 +118,83 @@ int findChar(ibitstream& input, HuffmanNode* encodingTree){
 }
 
 void decodeData(ibitstream& input, HuffmanNode* encodingTree, ostream& output) {
-
     int inchar = 0;
     do{
         inchar = findChar(input, encodingTree);
-        if(inchar != -1)output.put(inchar);
-    }while(inchar != -1);
+        output.put(inchar);
+    }while(!(inchar == -1 || inchar == PSEUDO_EOF));
+}
+
+void writeNrAsBitStream(char i, int nr, obitstream& output){
+    if(nr < 8){
+        writeNrAsBitStream(i/2, nr+1, output);
+        output.writeBit(i%2);
+    }
+}
+
+void nrToByteStream(char i, obitstream& output){
+    if(i != -1){
+        writeNrAsBitStream(i, 0, output);
+    }
+    else{
+        writeNrAsBitStream(PSEUDO_EOF, 0, output);
+    }
+}
+
+void encodeHeader(HuffmanNode* encodingTree, obitstream& output){
+    if(encodingTree->isLeaf()){
+        output.writeBit(0);
+        nrToByteStream(encodingTree->character, output);
+    }
+    else{
+        output.writeBit(1);
+        encodeHeader(encodingTree->zero, output);
+        encodeHeader(encodingTree->one, output);
+    }
+}
+
+
+int readByte(ibitstream& input){
+    int out = 0;
+    for (int i = 8; i > 0; i--){
+        out += input.readBit()*pow(2, i-1);
+    }
+    return out;
+}
+
+HuffmanNode* decodeHeader(ibitstream& input){
+    int i = input.readBit();
+    HuffmanNode* n = new HuffmanNode();
+    if(i == 0){
+        n->character = readByte(input);
+        n->count = 0;
+        n->zero = nullptr;
+        n->one = nullptr;
+    }
+    else{
+        n->character = NOT_A_CHAR;
+        n->count = 0;
+        n->zero = decodeHeader(input);
+        n->one = decodeHeader(input);
+    }
+    return n;
 }
 
 void compress(istream& input, obitstream& output) {
     map<int, int> freqTable = buildFrequencyTable(input);
     HuffmanNode* encodingTree = buildEncodingTree(freqTable);
     map<int, string> encodingMap = buildEncodingMap(encodingTree);
+    encodeHeader(encodingTree, output);
     input.clear();
     input.seekg(0, ios::beg);
     encodeData(input, encodingMap, output);
 
+
 }
 
 void decompress(ibitstream& input, ostream& output) {
+    HuffmanNode* encodingTree = decodeHeader(input);
+    decodeData(input, encodingTree, output);
 
 }
 

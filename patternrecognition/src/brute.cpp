@@ -13,6 +13,8 @@
 #include <vector>
 #include <chrono>
 #include "Point.h"
+#include <set>
+#include <map>
 
 // constants
 static const int SCENE_WIDTH = 512;
@@ -68,23 +70,36 @@ int main(int argc, char *argv[]) {
     sort(points.begin(), points.end());
     auto begin = chrono::high_resolution_clock::now();
 
+    for (int i = 0; i < N; i++){
+        map<double, set<Point>> slopes;
+        for (int k = i ; k < N ; k++){
+            double slope = points.at(i).slopeTo(points.at(k));
+            slopes[slope].insert(points.at(i));
+            std::cout << slopes[slope].size() << std::endl;
+            if (slopes[slope].size() > 2){
+                render_line(scene, points.at(i), points.at(k));
+                a.processEvents();
+            }
+        }
+    }
+    //    // iterate through all combinations of 4 points
+    //    for (int i = 0 ; i < N-3 ; ++i) {
+    //        for (int j = i+1 ; j < N-2 ; ++j) {
+    //            for (int k = j+1 ; k < N-1 ; ++k) {
+    //                //only consider fourth point if first three are collinear
+    //                if (points.at(i).slopeTo(points.at(j)) == points.at(i).slopeTo(points.at(k))) {
+    //                    for (int m{k+1} ; m < N ; ++m) {
+    //                        if (points.at(i).slopeTo(points.at(j)) == points.at(i).slopeTo(points.at(m))) {
+    //                            render_line(scene, points.at(i), points.at(m));
+    //                            a.processEvents(); // show rendered line
+    //                        }
+    //                    }
+    //                }
+    //            }
+    //        }
+    //    }
 
-//    // iterate through all combinations of 4 points
-//    for (int i = 0 ; i < N-3 ; ++i) {
-//        for (int j = i+1 ; j < N-2 ; ++j) {
-//            for (int k = j+1 ; k < N-1 ; ++k) {
-//                //only consider fourth point if first three are collinear
-//                if (points.at(i).slopeTo(points.at(j)) == points.at(i).slopeTo(points.at(k))) {
-//                    for (int m{k+1} ; m < N ; ++m) {
-//                        if (points.at(i).slopeTo(points.at(j)) == points.at(i).slopeTo(points.at(m))) {
-//                            render_line(scene, points.at(i), points.at(m));
-//                            a.processEvents(); // show rendered line
-//                        }
-//                    }
-//                }
-//            }
-//        }
-//    }
+
 
     auto end = chrono::high_resolution_clock::now();
     cout << "Computing line segments took "

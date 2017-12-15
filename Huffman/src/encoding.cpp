@@ -79,6 +79,8 @@ map<int, string> buildEncodingMap(HuffmanNode* encodingTree) {
 
     encodingMap = buildRestOfEncodingMap(encodingTree, "");
 
+    if(encodingTree->character == PSEUDO_EOF){
+    }
     return encodingMap;
 }
 
@@ -122,6 +124,9 @@ void decodeData(ibitstream& input, HuffmanNode* encodingTree, ostream& output) {
     do{
         inchar = findChar(input, encodingTree);
         output.put(inchar);
+        if(inchar != 'd'){
+            std::cout << (char)inchar << std::flush;
+        }
     }while(!(inchar == -1 || inchar == PSEUDO_EOF));
 }
 
@@ -184,12 +189,13 @@ void compress(istream& input, obitstream& output) {
     map<int, int> freqTable = buildFrequencyTable(input);
     HuffmanNode* encodingTree = buildEncodingTree(freqTable);
     map<int, string> encodingMap = buildEncodingMap(encodingTree);
+    for (pair<int, string> el : encodingMap){
+        std::cout << (char)el.first << ": " << el.second << std::endl;
+    }
     encodeHeader(encodingTree, output);
     input.clear();
     input.seekg(0, ios::beg);
     encodeData(input, encodingMap, output);
-
-
 }
 
 void decompress(ibitstream& input, ostream& output) {

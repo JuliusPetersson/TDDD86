@@ -3,7 +3,7 @@
  * This program computes and plots all line segments involving 4 points
  * in a file using Qt.
  */
-/*
+
 #include <QApplication>
 #include <QGraphicsView>
 #include <QGraphicsScene>
@@ -68,22 +68,23 @@ int main(int argc, char *argv[]) {
     sort(points.begin(), points.end());
     auto begin = chrono::high_resolution_clock::now();
 
-    // iterate through all combinations of 4 points
-    for (int i = 0 ; i < N-3 ; ++i) {
-        for (int j = i+1 ; j < N-2 ; ++j) {
-            for (int k = j+1 ; k < N-1 ; ++k) {
-                //only consider fourth point if first three are collinear
-                if (points.at(i).slopeTo(points.at(j)) == points.at(i).slopeTo(points.at(k))) {
-                    for (int m{k+1} ; m < N ; ++m) {
-                        if (points.at(i).slopeTo(points.at(j)) == points.at(i).slopeTo(points.at(m))) {
-                            render_line(scene, points.at(i), points.at(m));
-                            a.processEvents(); // show rendered line
-                        }
-                    }
-                }
-            }
-        }
-    }
+
+//    // iterate through all combinations of 4 points
+//    for (int i = 0 ; i < N-3 ; ++i) {
+//        for (int j = i+1 ; j < N-2 ; ++j) {
+//            for (int k = j+1 ; k < N-1 ; ++k) {
+//                //only consider fourth point if first three are collinear
+//                if (points.at(i).slopeTo(points.at(j)) == points.at(i).slopeTo(points.at(k))) {
+//                    for (int m{k+1} ; m < N ; ++m) {
+//                        if (points.at(i).slopeTo(points.at(j)) == points.at(i).slopeTo(points.at(m))) {
+//                            render_line(scene, points.at(i), points.at(m));
+//                            a.processEvents(); // show rendered line
+//                        }
+//                    }
+//                }
+//            }
+//        }
+//    }
 
     auto end = chrono::high_resolution_clock::now();
     cout << "Computing line segments took "
@@ -92,3 +93,5 @@ int main(int argc, char *argv[]) {
 
     return a.exec(); // start Qt event loop
 }
+
+

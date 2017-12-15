@@ -11,12 +11,12 @@
     
       N       brute       sortering
  ----------------------------------
-    150
-    200
-    300
-    400
-    800
-   1600
+    150		46
+    200		107
+    300		325
+    400		749
+    800		5811
+   1600		46630
    3200
    6400
   12800
@@ -31,3 +31,4 @@
 Brute:
 Har tidkomplexitet n ^4 . Det syns i att den har tid en n + n ^4 vilket säger att det är ordo(n ^4). Det kan enkelt ses på funktionens for-loopar.
 Sortering:
+Har tidskomlplexitet ordo(n ^2) syns på de tv for-looparna

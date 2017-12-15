@@ -13,7 +13,6 @@
 #include <grid.h>
 #include <set>
 #include "lexicon.h"
-// TODO: include any other header files you need
 
 using namespace std;
 
@@ -26,22 +25,22 @@ public:
     Boggle();
 
     //checks to see if a word is a valid word
-    bool evaluateWord(const string) const;
+    bool evaluateWord(const string&) const;
 
     //draw self to board
     void draw() const;
 
     //allows the user to input a word
-    bool inputWord(const string);
+    bool inputWord(const string&);
 
     //checks if a given string is on the board
-    bool isOnBoard(const string);
+    bool isOnBoard(const string&);
 
     //debbuging setup, sets the board to a specific setup
     void juliusForce();
 
     //allows the user to force a setup
-    void forceSetup(const string);
+    void forceSetup(const string&);
 
     //generates the robots words
     void generateRobotWords();
@@ -71,10 +70,10 @@ public:
     int robotPoints;
 private:
     //recusivly look through all neghbours of letter to see if word can be created
-    bool isNeighbour(int letterX, int letterY, const string word);
+    bool isNeighbour(int letterX, int letterY, const string &word);
 
     //recursively look through neighbours and adds all valid words to the robots word list
-    void robotLetterSearch(int letterX, int letterY, const string word);
+    void robotLetterSearch(int letterX, int letterY, string word);
 
     void removeUsedWords();
 

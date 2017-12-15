@@ -35,7 +35,7 @@ void Boggle:: resetGame(){
     humanPoints = 0;
 }
 
-bool Boggle:: evaluateWord(const string word) const{
+bool Boggle:: evaluateWord(const string &word) const{
     if(!(wordList.contains(word)) || (word.size() < 4)) return false;
     for (string i:humanWords){
         if (i == word) return false;
@@ -43,7 +43,7 @@ bool Boggle:: evaluateWord(const string word) const{
     return true;
 }
 
-bool Boggle:: inputWord(const string s){
+bool Boggle:: inputWord(const string &s){
 
     if (evaluateWord(s)&&isOnBoard(s)){
         humanWords.insert(s);
@@ -55,12 +55,11 @@ bool Boggle:: inputWord(const string s){
 
 }
 
-bool Boggle:: isOnBoard(const string word) {
-    int x,y;
+bool Boggle:: isOnBoard(const string &word) {
     bool onboard;
     for (int i = 0; i < NUM_CUBES; i++){
-        x = i%BOARD_SIZE;
-        y = i/BOARD_SIZE;
+        int x = i%BOARD_SIZE;
+        int y = i/BOARD_SIZE;
 
         if (board[x][y].c == word[0]){
             onboard = isNeighbour(x,y,word.substr(1));
@@ -70,7 +69,7 @@ bool Boggle:: isOnBoard(const string word) {
     return false;
 }
 
-bool Boggle::isNeighbour(int letterX, int letterY, const string word) {
+bool Boggle::isNeighbour(int letterX, int letterY, const string &word) {
     board[letterX][letterY].visited = true;
     if (word.size()==0){
         board[letterX][letterY].visited = false;
@@ -193,7 +192,7 @@ void Boggle:: draw() const{
     std::cout << std::endl;
 }
 
-void Boggle:: forceSetup(const string s){
+void Boggle:: forceSetup(const string &s){
     int x,y;
     for (int i = 0; i < NUM_CUBES; i++){
         x = i%BOARD_SIZE;

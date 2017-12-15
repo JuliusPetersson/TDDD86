@@ -3,7 +3,7 @@
  * This program computes and plots all line segments involving 4 points
  * in a file using Qt.
  */
-
+/*
 #include <QApplication>
 #include <QGraphicsView>
 #include <QGraphicsScene>

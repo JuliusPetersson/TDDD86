@@ -29,5 +29,5 @@
  **********************************************************************/
 
 Brute:
-
+Har tidkomplexitet n ^4 . Det syns i att den har tid en n + n ^4 vilket säger att det är ordo(n ^4). Det kan enkelt ses på funktionens for-loopar.
 Sortering:

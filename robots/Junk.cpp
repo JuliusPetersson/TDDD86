@@ -31,3 +31,7 @@ bool Junk::attacks(const Unit& u) const{
 void Junk::moveTowards(const Unit &u){
 
 }
+
+Junk* Junk::clone() const{
+    return new Junk(*this);
+}

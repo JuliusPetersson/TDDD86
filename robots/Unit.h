@@ -7,6 +7,7 @@
 #define UNIT_H
 
 #include "utilities.h"
+#include <QGraphicsScene>
 
 /* Root class for all pieces on the board.
  * Subclasses are Robot, Hero and Junk.
@@ -17,6 +18,7 @@ public:
     Unit(const Unit& u);
     Unit(const Point& p);
 
+    virtual ~Unit();
     /*
     * Return Point representation of Unit
     */
@@ -50,7 +52,9 @@ public:
     /*
     * Draws self
     */
-    virtual void draw(){}
+    virtual void draw(QGraphicsScene* scene) const;
+
+    virtual Unit* clone() const;
 
 private:
     int x;  // x position of this unit

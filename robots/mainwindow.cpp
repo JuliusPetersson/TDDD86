@@ -12,6 +12,7 @@
 #include "iostream"
 
 MainWindow::MainWindow(QWidget *parent) :
+
     QWidget(parent) {
     // set default size and color
     scene = new QGraphicsScene(0, 0, SCENE_WIDTH, SCENE_HEIGHT);
@@ -123,7 +124,6 @@ void MainWindow::keyPressEvent(QKeyEvent *e)
                 QWidget::keyPressEvent(e);
             }
         }
-
         if (actionTaken) { // process results of viable move
             processMove(waiting);
         }
@@ -192,6 +192,10 @@ void MainWindow::resetGame() {
     level = 1;
     numberOfRobots = MIN_ROBOTS;
     gameState = GameState(numberOfRobots);
+//    {
+//        GameState tmp(numberOfRobots);
+//        gameState = tmp;
+//    }
     gameState.draw(scene);
     displayScore();
     displayLevel();

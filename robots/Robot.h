@@ -13,8 +13,9 @@ class Robot : public Unit {
 public:
     Robot();
     Robot(Unit c);
-    void draw(QGraphicsScene* scene) const;
+    virtual void draw(QGraphicsScene* scene) const override;
     virtual bool isJunk() const;
+    virtual Robot* clone() const override;
 };
 
 #endif // ROBOT_H

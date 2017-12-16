@@ -4,61 +4,44 @@
 #include "iostream"
 using namespace std;
 
-
-vector<Node *> depthFirstSearch(BasicGraph& graph, Vertex* start, Vertex* end) {
-    graph.resetData();
-
-    stack<Vertex*> s, currPath;
-    vector<Vertex*> path;
-
-    s.push(start);
-    while(s.size() != 0){
-        start = s.top();
-        s.pop();
-        Color c = start->getColor();
-        start->setColor(GREEN);
-
-        if(!start->visited){
-            currPath.push(start);
-            start->visited = true;
-            for (Arc* i:start->arcs){
-                i->finish->setColor(YELLOW);
-                s.push(i->finish);
-            }
-        }
-        else{
-            currPath.pop();
-            start->setColor(GRAY);
-        }
-    }
-}
-
-
-/*
-vector<Node *> depthFirstSearch(BasicGraph& graph, Vertex* start, Vertex* end) {
-    vector<Vertex*> path;
+vector<Node *> helperDepthFirstSearch(BasicGraph& graph, Vertex* start, Vertex* end) {
+    vector<Node*> path;
+    start->setColor(GREEN);
     start->visited = true;
-    start->setColor(YELLOW);
+
     if(start == end){
         path.push_back(start);
-        return path;
     }
-    for (Arc* i:start->arcs){
-        if (!(i->finish->visited)){
-            path = depthFirstSearch(graph,i->finish,end);
-            cout << path.size() << endl;
-            if(path.size() != 0){
-                path.push_back(start);
-                start->setColor(GREEN);
-            }else{
-                start->setColor(GRAY);
-            }
+    else{
+        for (Node* a: graph.getNeighbors(start)){
+            if(!(a->visited)){
+                a->previous = start;
+                path = helperDepthFirstSearch(graph, a, end);
 
+                if (path.size() > 0){
+                    path.push_back(start);
+                    break;
+                }
+                else{
+                    a->setColor(GRAY);
+                }
+            }
         }
     }
+
+
     return path;
+
 }
-*/
+
+
+vector<Node *> depthFirstSearch(BasicGraph &graph, Vertex *start, Vertex *end){
+    graph.resetData();
+    return helperDepthFirstSearch(graph, start, end);
+}
+
+
+
 
 vector<Node *> breadthFirstSearch(BasicGraph& graph, Vertex* start, Vertex* end) {
     // TODO: implement this function; remove these comments

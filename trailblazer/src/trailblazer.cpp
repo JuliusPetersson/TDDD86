@@ -2,6 +2,8 @@
 #include "trailblazer.h"
 #include "stack"
 #include "iostream"
+#include "algorithm"
+
 
 #include "pqueue.h"
 
@@ -85,12 +87,8 @@ void reversePath(Node* start,Node* end,vector<Node*> &reversedPath){
 
     reversedPath.push_back(start);
 
-    for (int i = 0; i < (reversedPath.size()/2); i++){
-        Node* first = reversedPath[i];
-        Node* second = reversedPath[reversedPath.size() - i];
-        reversedPath[i] = second;
-        reversedPath[reversedPath.size() - i] = first;
-    }
+    reverse(reversedPath.begin(),reversedPath.end());
+
 }
 
 vector<Node *> dijkstrasAlgorithm(BasicGraph& graph, Vertex* start, Vertex* end) {
@@ -99,6 +97,7 @@ vector<Node *> dijkstrasAlgorithm(BasicGraph& graph, Vertex* start, Vertex* end)
     PriorityQueue<Vertex*> prioQue;
     start->cost = 0;
 
+    prioQue.enqueue(start,start->cost);
     for (Vertex* i : graph.getNodeSet()){
         if (i != start){
             i->cost = numeric_limits<double>::infinity();
@@ -110,14 +109,14 @@ vector<Node *> dijkstrasAlgorithm(BasicGraph& graph, Vertex* start, Vertex* end)
 
     while(prioQue.size() != 0){
         Vertex* minNode = prioQue.dequeue();
-        minNode->setColor(GREEN);
         for (Vertex* i : graph.getNeighbors(minNode)){
-            Arc* c = graph.getEdge(minNode,i);
-            double dist = minNode->cost + c->cost;
+            double dist = graph.getArc(minNode, i)->cost + i->cost;
             if(i == end){
+                end->previous = minNode;
+                //ask for cost?!
                 i->setColor(GREEN);
                 cout << "foo" << endl;
-                reversePath(start,end,path);
+                reversePath(start, end, path);
                 return path;
             }
             if (dist < i->cost){
@@ -126,6 +125,8 @@ vector<Node *> dijkstrasAlgorithm(BasicGraph& graph, Vertex* start, Vertex* end)
                 prioQue.changePriority(i,dist);
             }
         }
+        minNode->setColor(GREEN);
+
     }
     return path;
 }

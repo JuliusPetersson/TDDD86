@@ -124,13 +124,10 @@ void decodeData(ibitstream& input, HuffmanNode* encodingTree, ostream& output) {
     do{
         inchar = findChar(input, encodingTree);
         output.put(inchar);
-        if(inchar != 'd'){
-            std::cout << (char)inchar << std::flush;
-        }
     }while(!(inchar == -1 || inchar == PSEUDO_EOF));
 }
 
-void writeNrAsBitStream(char i, int nr, obitstream& output){
+void writeNrAsBitStream(int i, int nr, obitstream& output){
     if(nr < 8){
         writeNrAsBitStream(i/2, nr+1, output);
         output.writeBit(i%2);
@@ -142,14 +139,19 @@ void nrToByteStream(char i, obitstream& output){
         writeNrAsBitStream(i, 0, output);
     }
     else{
-        writeNrAsBitStream(PSEUDO_EOF, 0, output);
+        writeNrAsBitStream(255, 0, output);
     }
 }
 
 void encodeHeader(HuffmanNode* encodingTree, obitstream& output){
     if(encodingTree->isLeaf()){
         output.writeBit(0);
-        nrToByteStream(encodingTree->character, output);
+        if(encodingTree->character != PSEUDO_EOF){
+            nrToByteStream(encodingTree->character, output);
+        }
+        else{
+            nrToByteStream(255, output);
+        }
     }
     else{
         output.writeBit(1);
@@ -171,7 +173,9 @@ HuffmanNode* decodeHeader(ibitstream& input){
     int i = input.readBit();
     HuffmanNode* n = new HuffmanNode();
     if(i == 0){
-        n->character = readByte(input);
+        int c = readByte(input);
+        if(c != 255) n->character = c;
+        else n->character = PSEUDO_EOF;
         n->count = 0;
         n->zero = nullptr;
         n->one = nullptr;
@@ -189,9 +193,7 @@ void compress(istream& input, obitstream& output) {
     map<int, int> freqTable = buildFrequencyTable(input);
     HuffmanNode* encodingTree = buildEncodingTree(freqTable);
     map<int, string> encodingMap = buildEncodingMap(encodingTree);
-    for (pair<int, string> el : encodingMap){
-        std::cout << (char)el.first << ": " << el.second << std::endl;
-    }
+
     encodeHeader(encodingTree, output);
     input.clear();
     input.seekg(0, ios::beg);

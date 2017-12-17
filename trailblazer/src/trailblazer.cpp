@@ -2,6 +2,7 @@
 #include "trailblazer.h"
 #include "stack"
 #include "iostream"
+#include "pqueue.h"
 using namespace std;
 
 vector<Node *> helperDepthFirstSearch(BasicGraph& graph, Vertex* start, Vertex* end) {
@@ -53,10 +54,26 @@ vector<Node *> breadthFirstSearch(BasicGraph& graph, Vertex* start, Vertex* end)
 }
 
 vector<Node *> dijkstrasAlgorithm(BasicGraph& graph, Vertex* start, Vertex* end) {
-    // TODO: implement this function; remove these comments
-    //       (The function body code provided below is just a stub that returns
-    //        an empty vector so that the overall project will compile.
-    //        You should remove that code and replace it with your implementation.)
+    graph.resetData();
+    PriorityQueue<Vertex*> prioQue;
+    start->cost = 0;
+
+    for (Vertex* i : graph.getNodeSet()){
+        if (i != start){
+            i->cost = numeric_limits<double>::infinity();
+            i->previous = NULL;
+        }
+        prioQue.enqueue(i,i->cost);
+    }
+    while(prioQue.size() != 0){
+        Vertex* minNode = prioQue.front();
+        for (Vertex* i : graph.getNeighbors(minNode)){
+            Arc* c;
+            c->start = i;
+            c->finish = minNode;
+            double dist = i->cost + c->cost;
+    }
+    }
     vector<Vertex*> path;
     return path;
 }

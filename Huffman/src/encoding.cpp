@@ -94,7 +94,7 @@ void encodeData(istream& input, const map<int, string> &encodingMap, obitstream&
         }
     }
 
-    result += encodingMap.find(PSEUDO_EOF)->second;
+    result += "11111111";
 
     for (char c : result){
         if(c == '1'){
@@ -124,9 +124,6 @@ void decodeData(ibitstream& input, HuffmanNode* encodingTree, ostream& output) {
     do{
         inchar = findChar(input, encodingTree);
         output.put(inchar);
-        if(inchar != 'd'){
-            std::cout << (char)inchar << std::flush;
-        }
     }while(!(inchar == -1 || inchar == PSEUDO_EOF));
 }
 
@@ -149,7 +146,12 @@ void nrToByteStream(char i, obitstream& output){
 void encodeHeader(HuffmanNode* encodingTree, obitstream& output){
     if(encodingTree->isLeaf()){
         output.writeBit(0);
-        nrToByteStream(encodingTree->character, output);
+        if(encodingTree->character != PSEUDO_EOF){
+            nrToByteStream(encodingTree->character, output);
+        }
+        else{
+            nrToByteStream(255, output);
+        }
     }
     else{
         output.writeBit(1);
@@ -171,7 +173,9 @@ HuffmanNode* decodeHeader(ibitstream& input){
     int i = input.readBit();
     HuffmanNode* n = new HuffmanNode();
     if(i == 0){
-        n->character = readByte(input);
+        int c = readByte(input);
+        if(c != 255) n->character = readByte(input);
+        else n->character = PSEUDO_EOF;
         n->count = 0;
         n->zero = nullptr;
         n->one = nullptr;

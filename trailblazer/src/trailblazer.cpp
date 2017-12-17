@@ -53,8 +53,26 @@ vector<Node *> breadthFirstSearch(BasicGraph& graph, Vertex* start, Vertex* end)
     return path;
 }
 
+void reversePath(Node* start,Node* end,vector<Node*> &reversedPath){
+    Node* currNode = end;
+    while(currNode != start){
+        reversedPath.push_back(currNode);
+        currNode = currNode->previous;
+    }
+
+    reversedPath.push_back(start);
+
+    for (int i = 0; i < (reversedPath.size()/2); i++){
+        Node* first = reversedPath[i];
+        Node* second = reversedPath[reversedPath.size() - i];
+        reversedPath[i] = second;
+        reversedPath[reversedPath.size() - i] = first;
+    }
+}
+
 vector<Node *> dijkstrasAlgorithm(BasicGraph& graph, Vertex* start, Vertex* end) {
     graph.resetData();
+    vector<Vertex*> path;
     PriorityQueue<Vertex*> prioQue;
     start->cost = 0;
 
@@ -63,18 +81,29 @@ vector<Node *> dijkstrasAlgorithm(BasicGraph& graph, Vertex* start, Vertex* end)
             i->cost = numeric_limits<double>::infinity();
             i->previous = NULL;
         }
+        i->setColor(YELLOW);
         prioQue.enqueue(i,i->cost);
     }
+
     while(prioQue.size() != 0){
-        Vertex* minNode = prioQue.front();
+        Vertex* minNode = prioQue.dequeue();
+        minNode->setColor(GREEN);
         for (Vertex* i : graph.getNeighbors(minNode)){
-            Arc* c;
-            c->start = i;
-            c->finish = minNode;
-            double dist = i->cost + c->cost;
+            Arc* c = graph.getEdge(minNode,i);
+            double dist = minNode->cost + c->cost;
+            if(i == end){
+                i->setColor(GREEN);
+                cout << "foo" << endl;
+                reversePath(start,end,path);
+                return path;
+            }
+            if (dist < i->cost){
+                i->cost = dist;
+                i->previous = minNode;
+                prioQue.changePriority(i,dist);
+            }
+        }
     }
-    }
-    vector<Vertex*> path;
     return path;
 }
 

@@ -13,7 +13,6 @@ HEADERS += mainwindow.h \
 SOURCES += mainwindow.cpp \
     robotsmain.cpp \
     utilities.cpp \
-    Unit.cpp \
     Junk.cpp \
     Hero.cpp \
     Robot.cpp \

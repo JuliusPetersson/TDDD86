@@ -9,10 +9,7 @@
 #include <cstdlib>
 #include <cmath>
 
-Unit::Unit() {
-    teleport();
-}
-
+Unit::Unit(){}
 Unit::Unit(const Unit& u) {
     x = u.x;
     y = u.y;
@@ -29,9 +26,7 @@ Point Unit::asPoint() const {
     return Point{x, y};
 }
 
-bool Unit::at(const Unit& u) const {
-    return (x == u.x && y == u.y);
-}
+bool Unit::at(const Unit& u) const {}
 
 bool Unit::attacks(const Unit& u) const {
     return (abs(x - u.x) <= 1 &&

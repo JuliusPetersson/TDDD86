@@ -94,7 +94,7 @@ void encodeData(istream& input, const map<int, string> &encodingMap, obitstream&
         }
     }
 
-    result += "11111111";
+    result += encodingMap.find(PSEUDO_EOF)->second;
 
     for (char c : result){
         if(c == '1'){
@@ -127,7 +127,7 @@ void decodeData(ibitstream& input, HuffmanNode* encodingTree, ostream& output) {
     }while(!(inchar == -1 || inchar == PSEUDO_EOF));
 }
 
-void writeNrAsBitStream(char i, int nr, obitstream& output){
+void writeNrAsBitStream(int i, int nr, obitstream& output){
     if(nr < 8){
         writeNrAsBitStream(i/2, nr+1, output);
         output.writeBit(i%2);
@@ -139,7 +139,7 @@ void nrToByteStream(char i, obitstream& output){
         writeNrAsBitStream(i, 0, output);
     }
     else{
-        writeNrAsBitStream(PSEUDO_EOF, 0, output);
+        writeNrAsBitStream(255, 0, output);
     }
 }
 
@@ -174,7 +174,7 @@ HuffmanNode* decodeHeader(ibitstream& input){
     HuffmanNode* n = new HuffmanNode();
     if(i == 0){
         int c = readByte(input);
-        if(c != 255) n->character = readByte(input);
+        if(c != 255) n->character = c;
         else n->character = PSEUDO_EOF;
         n->count = 0;
         n->zero = nullptr;
@@ -193,9 +193,7 @@ void compress(istream& input, obitstream& output) {
     map<int, int> freqTable = buildFrequencyTable(input);
     HuffmanNode* encodingTree = buildEncodingTree(freqTable);
     map<int, string> encodingMap = buildEncodingMap(encodingTree);
-    for (pair<int, string> el : encodingMap){
-        std::cout << (char)el.first << ": " << el.second << std::endl;
-    }
+
     encodeHeader(encodingTree, output);
     input.clear();
     input.seekg(0, ios::beg);

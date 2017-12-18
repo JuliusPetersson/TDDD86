@@ -6,6 +6,7 @@
 #ifndef UNIT_H
 #define UNIT_H
 
+#include "constants.h"
 #include "utilities.h"
 #include <QGraphicsScene>
 
@@ -49,8 +50,22 @@ public:
     /*
     * Take one step closer to u
     */
-    virtual void moveTowards(const Unit& u) = 0;
+    virtual void moveTowards(const Unit& u){
+        if (x > u.x) x--;
+        if (x < u.x) x++;
+        if (y > u.y) y--;
+        if (y < u.y) y++;
+        checkBounds();
+    }
 
+
+    void moveTowards(const Point& u) {
+        if (x > u.x) x--;
+        if (x < u.x) x++;
+        if (y > u.y) y--;
+        if (y < u.y) y++;
+        checkBounds();
+    }
     /*
     * Teleport. Does not check for collision
     */

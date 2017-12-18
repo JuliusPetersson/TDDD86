@@ -7,7 +7,7 @@
 #include "constants.h"
 
 Robot::Robot() : Unit() {}
-Robot::Robot(Unit c) : Unit(c) {}
+Robot::Robot(Unit& c) : Unit(c) {}
 
 void Robot::draw(QGraphicsScene *scene) const {
     Point corner = asPoint();
@@ -21,3 +21,10 @@ bool Robot::isJunk() const{
 Robot* Robot::clone() const{
     return new Robot(*this);
 }
+
+
+bool Unit::attacks(const Unit& u) const {
+    return (abs(x - u.x) <= 1 &&
+            abs(y - u.y) <= 1);
+}
+

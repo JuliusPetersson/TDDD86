@@ -7,9 +7,15 @@
 #include "constants.h"
 
 Hero::Hero() : Unit() {}
+Hero::Hero(Unit& c) : Unit(c) {}
+Hero::~Hero() {}
 
 void Hero::draw(QGraphicsScene *scene) const {
     Point corner = asPoint();
     scene->addRect(QRectF(corner.x * UNIT_WIDTH, corner.y * UNIT_HEIGHT,
                           UNIT_WIDTH, UNIT_HEIGHT), Qt::NoPen, QBrush(HERO_COLOR));
+}
+
+Hero* Hero :: clone() const{
+    return new Hero(*this);
 }

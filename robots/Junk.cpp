@@ -7,7 +7,7 @@
 #include "constants.h"
 
 Junk::Junk() : Robot() {}
-Junk::Junk(Unit c) : Robot(c) {}
+Junk::Junk(Unit& c) : Robot(c) {}
 
 void Junk::draw(QGraphicsScene *scene) const {
     Point corner = asPoint();
@@ -28,7 +28,7 @@ bool Junk::attacks(const Unit& u) const{
     return p1.x == p2.x && p1.y == p2.y;
 }
 
-void Junk::moveTowards(const Unit &u){
+void Junk::moveTowards(const Unit& u){
 
 }
 

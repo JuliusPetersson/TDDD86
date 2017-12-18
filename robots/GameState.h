@@ -69,7 +69,7 @@ public:
     /*
      * Move hero towards dir
      */
-    void moveHeroTowards (const Unit& dir);
+    void moveHeroTowards (const Point& dir);
 
     /*
      * Return hero

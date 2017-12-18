@@ -13,15 +13,16 @@
 class Junk : public Robot {
 public:
     Junk();
-    Junk(Unit* c);
+    Junk(Unit& c);
 
     /*
     * Draws this junk onto the given QGraphicsScene.
     */
     void draw(QGraphicsScene* scene) const override;
     bool isJunk() const override;
-    void moveTowards(const Unit& u) override;
     bool attacks(const Unit& u) const override;
+
+    void moveTowards(const Unit& u) override;
     virtual Junk* clone() const override;
 };
 

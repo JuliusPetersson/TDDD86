@@ -12,10 +12,12 @@
 class Robot : public Unit {
 public:
     Robot();
-    Robot(Unit* c);
+    Robot(Unit& c);
+    ~Robot();
     virtual void draw(QGraphicsScene* scene) const override;
     virtual bool isJunk() const;
     virtual Robot* clone() const override;
+    bool attacks(const Unit& u) const override;
 };
 
 #endif // ROBOT_H

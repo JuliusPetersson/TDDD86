@@ -18,7 +18,7 @@
 int main(int argc, char *argv[]) {
     QApplication a(argc, argv);
 
-    string filename = "tsp100.txt";
+    string filename = "tsp1000.txt";
     ifstream input;
     input.open(filename);
 
@@ -46,13 +46,17 @@ int main(int argc, char *argv[]) {
         tour.insertNearest(p);
         //tour.insertNearest(p);
         //uncomment the 4 lines below to animate
-        tour.draw(scene);
-        std::chrono::milliseconds dura(50);
-        std::this_thread::sleep_for(dura);
-        a.processEvents();
+        //tour.draw(scene);
+        //std::chrono::milliseconds dura(50);
+        //std::this_thread::sleep_for(dura);
+        //a.processEvents();
     }
+    cout << "start unraveling" << endl;
+    tour.unravelAll();
+    tour.draw(scene);
     input.close();
     //tour.nodeInterchange();
+
 
     // print tour to standard output
     cout << "Tour distance: " << std::fixed << std::setprecision(4)

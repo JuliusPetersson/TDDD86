@@ -264,3 +264,60 @@ void Tour::nodeInterchange(){
     }
 }
 
+void unravel(Node* node1, Node* node2){
+    Node* curr = node2->next->next;
+    Node* old = node2->next;
+    Node* next;
+
+    node2->next->next = node1->next;
+    node2->next = node1;
+
+    while(old != node1){
+        next = curr->next;
+        curr->next = old;
+        old = curr;
+        curr = next;
+    }
+}
+
+bool noCrossing(Node* node1, Node* node2){
+    double lengthBefore = node1->point.distanceTo(node1->next->point) +node2->point.distanceTo(node2->next->point);
+    double lengthAfter = node1->point.distanceTo(node2->point) + node1->next->point.distanceTo(node2->next->point);
+
+    if(lengthBefore > lengthAfter){
+        unravel(node1, node2);
+        return false;
+    }
+    else{
+        return true;
+    }
+}
+void Tour::unravelAll(){
+    bool unraveld = true;
+    Node* node1;
+    Node* node2;
+
+
+
+
+    do{
+        //std::cout << i << std::endl;
+        unraveld = true;
+        node1 = firstNode->next;
+        while(node1 != firstNode){
+
+            //std::cout << "iterating low level" << std::endl;
+            node2 = node1->next;
+            while(node2 != firstNode){
+              //  std::cout << "iterating high level" << std::endl;
+                if(node1 != node2){
+                    unraveld = unraveld&&noCrossing(node1, node2);
+
+                    //std::cout << unraveld << std::endl;
+                }
+                node2 = node2->next;
+            }
+            node1 = node1->next;
+        }
+    }while(!unraveld);
+}

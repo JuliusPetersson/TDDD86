@@ -32,9 +32,10 @@ void render_line(QGraphicsScene* scene, const Point& p1, const Point& p2) {
 
 int main(int argc, char *argv[]) {
     QApplication a(argc, argv);
+    int counter = 0;
 
     // open file
-    string filename = "input800.txt";
+    string filename = "input150.txt";
     ifstream input;
     input.open(filename);
 
@@ -77,6 +78,7 @@ int main(int argc, char *argv[]) {
             slopes[slope].insert(points.at(k));
             if (slopes[slope].size() > 2){
                 render_line(scene, points.at(i), points.at(k));
+                counter++;
                 a.processEvents();
             }
         }
@@ -86,7 +88,7 @@ int main(int argc, char *argv[]) {
     cout << "Computing line segments took "
          << std::chrono::duration_cast<chrono::milliseconds>(end - begin).count()
          << " milliseconds." << endl;
-
+    cout << counter << endl;
     return a.exec(); // start Qt event loop
 }
 

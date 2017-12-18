@@ -81,16 +81,17 @@ vector<Node *> breadthFirstSearch(BasicGraph& graph, Vertex* start, Vertex* end)
 void reversePath(Node* start,Node* end,vector<Node*> &reversedPath){
     Node* currNode = end;
     while(currNode != start){
-        reversedPath.push_back(currNode);
+        reversedPath.insert(reversedPath.begin(),currNode);
         currNode = currNode->previous;
     }
 
-    reversedPath.push_back(start);
+    reversedPath.insert(reversedPath.begin(),start);
 
-    reverse(reversedPath.begin(),reversedPath.end());
+    //reverse(reversedPath.begin(),reversedPath.end());
 
 }
 
+/*
 vector<Node *> dijkstrasAlgorithm(BasicGraph& graph, Vertex* start, Vertex* end) {
     graph.resetData();
     vector<Vertex*> path;
@@ -115,8 +116,17 @@ vector<Node *> dijkstrasAlgorithm(BasicGraph& graph, Vertex* start, Vertex* end)
                 end->previous = minNode;
                 //ask for cost?!
                 i->setColor(GREEN);
+                Node* temp = end;
+                int test=0;
+                while(temp != start){
+                    cout << test << endl;
+                    path.insert(path.begin(), temp);
+                    temp = temp->previous;
+                    test++;
+                }
+                path.insert(path.begin(), temp);
+
                 cout << "foo" << endl;
-                reversePath(start, end, path);
                 return path;
             }
             if (dist < i->cost){
@@ -131,6 +141,51 @@ vector<Node *> dijkstrasAlgorithm(BasicGraph& graph, Vertex* start, Vertex* end)
     return path;
 }
 
+*/
+
+vector<Node *> dijkstrasAlgorithm(BasicGraph& graph, Vertex* start, Vertex* end) {
+    PriorityQueue<Node*> pQue;
+    vector<Node *> path;
+    pQue.enqueue(start,0);
+    start->setColor(GREEN);
+
+    while(!(pQue.isEmpty())){
+        Node *minNode = pQue.dequeue();
+        if (minNode == end){
+            end->previous = minNode;
+            //ask for cost?!
+            minNode->setColor(GREEN);
+            Node* temp = end;
+            while(temp != start){
+                path.insert(path.begin(), temp);
+                temp = temp->previous;
+            }
+            path.insert(path.begin(), temp);
+            temp->setColor(GREEN);
+
+            cout << "foo" << endl;
+            return path;
+        }
+        for (Node* neighbour : graph.getNeighbors(minNode)){
+            double dist = graph.getArc(minNode,neighbour)->cost;
+            if(!(neighbour->visited)){
+                if (neighbour->getColor() != YELLOW){
+                    neighbour->cost = dist;
+                    pQue.enqueue(neighbour,neighbour->cost);
+                    neighbour->previous = minNode;
+                    neighbour->setColor(YELLOW);
+                }else if(dist < neighbour->cost){
+                    dist = minNode->cost + graph.getArc(minNode,neighbour)->cost;
+                    neighbour->previous = minNode;
+                    pQue.changePriority(neighbour, dist);
+                }
+            }
+        }
+        minNode->visited = true;
+        minNode->setColor(GREEN);
+    }
+    return path;
+}
 vector<Node *> aStar(BasicGraph& graph, Vertex* start, Vertex* end) {
     // TODO: implement this function; remove these comments
     //       (The function body code provided below is just a stub that returns

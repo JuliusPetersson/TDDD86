@@ -16,66 +16,49 @@ class Unit {
 public:
     Unit() {teleport();}
 
-    Unit(const Unit& u) {
-        x = u.x;
-        y = u.y;
-    }
+    Unit(const Unit& u);
 
-    Unit(const Point& p) {
-        x = p.x;
-        y = p.y;
-    }
-
-    virtual ~Unit() = 0;
+    Unit(const Point& p);
     /*
     * Return Point representation of Unit
     */
-    Point asPoint() const{
-        return Point{x, y};
-    }
+    Point asPoint() const;
 
     /*
     * Am I in the same square as u?
     */
-    bool at(const Unit& u) const{
-        return (x == u.x && y == u.y);
-    }
+    bool at(const Unit& u) const;
 
     /*
     * Can I catch u in one move?
     */
-    virtual bool attacks(const Unit& u) const = 0;
+    virtual bool attacks(const Unit& u) const;
 
     /*
     * Take one step closer to u
     */
-    virtual void moveTowards(const Unit& u) = 0;
+    virtual void moveTowards(const Unit& u);
 
     /*
     * Teleport. Does not check for collision
     */
-    void teleport(){
-        x = rand_int (MIN_X, MAX_X);
-        y = rand_int (MIN_Y, MAX_Y);
-    }
+    void teleport();
 
     /*
     * Euclidean distance to u
     */
-    double distanceTo(const Unit& u) const{
-        double dx = u.x - x;
-        double dy = u.y - y;
-        return sqrt(dx * dx + dy * dy);
-    }
-
+    double distanceTo(const Unit& u) const;
     /*
     * Draws self
     */
     virtual void draw(QGraphicsScene* scene) const = 0;
 
-    virtual Unit* clone() const = 0;
+    virtual Unit* clone() const;
 
 private:
+
+    friend class Robot;
+
     int x;  // x position of this unit
     int y;  // y position of this unit
 

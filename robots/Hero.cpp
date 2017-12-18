@@ -7,6 +7,7 @@
 #include "constants.h"
 
 Hero::Hero() : Unit() {}
+Hero::Hero(Unit& u) : unit(u){}
 
 void Hero::draw(QGraphicsScene *scene) const {
     Point corner = asPoint();
@@ -14,6 +15,14 @@ void Hero::draw(QGraphicsScene *scene) const {
                           UNIT_WIDTH, UNIT_HEIGHT), Qt::NoPen, QBrush(HERO_COLOR));
 }
 
-void moveTowards(const Unit& u){}
-bool attacks(const Unit& u) const;
-void draw(QGraphicsScene *scene) const{}
+bool attacks(const Unit& u) const{
+    return false;
+}
+
+Hero* Hero::clone() const{
+    return new Hero(this);
+}
+
+void moveTowards(const Unit& u){
+    Unit::moveTowards(u);
+}

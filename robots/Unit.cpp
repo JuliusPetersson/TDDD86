@@ -26,7 +26,9 @@ Point Unit::asPoint() const {
     return Point{x, y};
 }
 
-bool Unit::at(const Unit& u) const {}
+bool Unit::at(const Unit& u) const {
+    return x == u.x && y == u.y;
+}
 
 bool Unit::attacks(const Unit& u) const {
     return (abs(x - u.x) <= 1 &&
@@ -51,8 +53,6 @@ double Unit::distanceTo(const Unit& u) const {
     double dy = u.y - y;
     return sqrt(dx * dx + dy * dy);
 }
-
-void Unit::draw(QGraphicsScene* scene) const{}
 
 Unit* Unit::clone() const{
     return new Unit(*this);

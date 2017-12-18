@@ -12,12 +12,14 @@
 class Hero : public Unit {
 public:
     Hero();
-    Hero(Unit u);
+    Hero(Unit* u);
 
     /*
     * Draws this hero onto the given QGraphicsScene.
     */
-    void draw(QGraphicsScene *scene) const;
+    void moveTowards(const Unit& u) override;
+    bool attacks(const Unit& u) const override;
+    void draw(QGraphicsScene *scene) const override;
 };
 
 #endif // HERO_H

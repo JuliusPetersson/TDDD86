@@ -13,13 +13,13 @@ HEADERS += mainwindow.h \
 SOURCES += mainwindow.cpp \
     robotsmain.cpp \
     utilities.cpp \
-    Unit.cpp \
     Junk.cpp \
     Hero.cpp \
     Robot.cpp \
     GameState.cpp \
     qgameoverwindow.cpp \
-    qresetbutton.cpp
+    qresetbutton.cpp \
+    Unit.cpp
 QMAKE_CXXFLAGS += -std=c++11
 macx {
     cache()

@@ -13,3 +13,7 @@ void Hero::draw(QGraphicsScene *scene) const {
     scene->addRect(QRectF(corner.x * UNIT_WIDTH, corner.y * UNIT_HEIGHT,
                           UNIT_WIDTH, UNIT_HEIGHT), Qt::NoPen, QBrush(HERO_COLOR));
 }
+
+void moveTowards(const Unit& u){}
+bool attacks(const Unit& u) const;
+void draw(QGraphicsScene *scene) const{}

@@ -168,7 +168,7 @@ vector<Node *> dijkstrasAlgorithm(BasicGraph& graph, Vertex* start, Vertex* end)
             return path;
         }
         for (Node* neighbour : graph.getNeighbors(minNode)){
-            double dist = graph.getArc(minNode,neighbour)->cost;
+            double dist = graph.getArc(minNode,neighbour)->cost + minNode->cost;
             if(!(neighbour->visited)){
                 if (neighbour->getColor() != YELLOW){
                     neighbour->cost = dist;
@@ -176,7 +176,7 @@ vector<Node *> dijkstrasAlgorithm(BasicGraph& graph, Vertex* start, Vertex* end)
                     neighbour->previous = minNode;
                     neighbour->setColor(YELLOW);
                 }else if(dist < neighbour->cost){
-                    dist = minNode->cost + graph.getArc(minNode,neighbour)->cost;
+                    neighbour->cost = dist;
                     neighbour->previous = minNode;
                     pQue.changePriority(neighbour, dist);
                 }

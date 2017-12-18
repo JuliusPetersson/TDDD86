@@ -188,10 +188,45 @@ vector<Node *> dijkstrasAlgorithm(BasicGraph& graph, Vertex* start, Vertex* end)
     return path;
 }
 vector<Node *> aStar(BasicGraph& graph, Vertex* start, Vertex* end) {
-    // TODO: implement this function; remove these comments
-    //       (The function body code provided below is just a stub that returns
-    //        an empty vector so that the overall project will compile.
-    //        You should remove that code and replace it with your implementation.)
-    vector<Vertex*> path;
+    graph.resetData();
+    PriorityQueue<Node*> pQue;
+    vector<Node *> path;
+    map<Node *, double> aStarScore;
+    pQue.enqueue(start,0);
+    start->setColor(GREEN);
+
+    while(!(pQue.isEmpty())){
+        Node *minNode = pQue.dequeue();
+        if (minNode == end){
+            minNode->setColor(GREEN);
+            Node* temp = end;
+            while(temp != start){
+                path.insert(path.begin(), temp);
+                temp = temp->previous;
+            }
+            path.insert(path.begin(), temp);
+            temp->setColor(GREEN);
+
+            return path;
+        }
+        for (Node* neighbour : graph.getNeighbors(minNode)){
+            double dist = minNode->cost + graph.getArc(minNode, neighbour)->cost;
+            if(!(neighbour->visited)){
+                if (neighbour->getColor() != YELLOW){
+                    neighbour->cost = dist;
+                    pQue.enqueue(neighbour,neighbour->cost + neighbour->heuristic(end));
+                    neighbour->previous = minNode;
+                    neighbour->setColor(YELLOW);
+                }else if(dist < neighbour->cost){
+                    neighbour->cost = dist;
+                    neighbour->previous = minNode;
+
+                    pQue.changePriority(neighbour, dist + neighbour->heuristic(end));
+                }
+            }
+        }
+        minNode->visited = true;
+        minNode->setColor(GREEN);
+    }
     return path;
 }

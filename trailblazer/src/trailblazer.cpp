@@ -144,6 +144,7 @@ vector<Node *> dijkstrasAlgorithm(BasicGraph& graph, Vertex* start, Vertex* end)
 */
 
 vector<Node *> dijkstrasAlgorithm(BasicGraph& graph, Vertex* start, Vertex* end) {
+    graph.resetData();
     PriorityQueue<Node*> pQue;
     vector<Node *> path;
     pQue.enqueue(start,0);
@@ -152,7 +153,7 @@ vector<Node *> dijkstrasAlgorithm(BasicGraph& graph, Vertex* start, Vertex* end)
     while(!(pQue.isEmpty())){
         Node *minNode = pQue.dequeue();
         if (minNode == end){
-            end->previous = minNode;
+            //end->previous = minNode;
             //ask for cost?!
             minNode->setColor(GREEN);
             Node* temp = end;

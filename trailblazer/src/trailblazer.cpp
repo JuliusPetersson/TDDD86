@@ -57,6 +57,7 @@ vector<Node *> breadthFirstSearch(BasicGraph& graph, Vertex* start, Vertex* end)
         start = nodeQueue.front();
         nodeQueue.pop();
 
+        start->visited = true;
         start->setColor(GREEN);
 
         for(Node* node : graph.getNeighbors(start)){

@@ -303,12 +303,12 @@ void Tour::unravelAll(){
     do{
         //std::cout << i << std::endl;
         unraveld = true;
-        node1 = firstNode->next;
-        while(node1 != firstNode){
+        node1 = firstNode;
+        do{
 
             //std::cout << "iterating low level" << std::endl;
             node2 = node1->next;
-            while(node2 != firstNode){
+            do{
               //  std::cout << "iterating high level" << std::endl;
                 if(node1 != node2){
                     unraveld = unraveld&&noCrossing(node1, node2);
@@ -316,8 +316,8 @@ void Tour::unravelAll(){
                     //std::cout << unraveld << std::endl;
                 }
                 node2 = node2->next;
-            }
+            }while(node2 != firstNode);
             node1 = node1->next;
-        }
+        }while(node1 != firstNode);
     }while(!unraveld);
 }

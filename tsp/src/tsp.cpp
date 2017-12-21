@@ -51,11 +51,9 @@ int main(int argc, char *argv[]) {
         //std::this_thread::sleep_for(dura);
         //a.processEvents();
     }
-    cout << "start unraveling" << endl;
     tour.unravelAll();
     tour.draw(scene);
     input.close();
-    //tour.nodeInterchange();
 
 
     // print tour to standard output

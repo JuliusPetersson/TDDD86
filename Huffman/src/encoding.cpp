@@ -14,12 +14,7 @@ map<int, int> buildFrequencyTable(istream& input) {
     int inputChar = input.get();
 
     while(inputChar != -1){
-        map<int, int>::iterator it = freqTable.find(inputChar);
-        if(it != freqTable.end()){
-            (it->second)++;
-        }else{
-            freqTable.insert(std::pair<int,int>(inputChar,1));
-        }
+        ++freqTable[inputChar];
         inputChar = input.get();
     }
     freqTable.insert(std::pair<int,int>(PSEUDO_EOF,1));
@@ -79,8 +74,6 @@ map<int, string> buildEncodingMap(HuffmanNode* encodingTree) {
 
     encodingMap = buildRestOfEncodingMap(encodingTree, "");
 
-    if(encodingTree->character == PSEUDO_EOF){
-    }
     return encodingMap;
 }
 
@@ -207,5 +200,10 @@ void decompress(ibitstream& input, ostream& output) {
 }
 
 void freeTree(HuffmanNode* node) {
-    // TODO: implement this function
+    if(node != nullptr){
+        freeTree(node->one);
+        freeTree(node->zero);
+    }
+
+    delete node;
 }

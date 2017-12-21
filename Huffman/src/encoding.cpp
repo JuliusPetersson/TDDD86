@@ -121,30 +121,21 @@ void decodeData(ibitstream& input, HuffmanNode* encodingTree, ostream& output) {
 }
 
 void writeNrAsBitStream(int i, int nr, obitstream& output){
-    if(nr < 8){
+    if(nr < 9){
         writeNrAsBitStream(i/2, nr+1, output);
         output.writeBit(i%2);
     }
 }
 
-void nrToByteStream(char i, obitstream& output){
-    if(i != -1){
-        writeNrAsBitStream(i, 0, output);
-    }
-    else{
-        writeNrAsBitStream(255, 0, output);
-    }
+void nrToByteStream(int i, obitstream& output){
+    writeNrAsBitStream(i, 0, output);
+
 }
 
 void encodeHeader(HuffmanNode* encodingTree, obitstream& output){
     if(encodingTree->isLeaf()){
         output.writeBit(0);
-        if(encodingTree->character != PSEUDO_EOF){
-            nrToByteStream(encodingTree->character, output);
-        }
-        else{
-            nrToByteStream(255, output);
-        }
+        nrToByteStream(encodingTree->character, output);
     }
     else{
         output.writeBit(1);
@@ -156,7 +147,7 @@ void encodeHeader(HuffmanNode* encodingTree, obitstream& output){
 
 int readByte(ibitstream& input){
     int out = 0;
-    for (int i = 8; i > 0; i--){
+    for (int i = 9; i > 0; i--){
         out += input.readBit()*pow(2, i-1);
     }
     return out;
@@ -166,9 +157,7 @@ HuffmanNode* decodeHeader(ibitstream& input){
     int i = input.readBit();
     HuffmanNode* n = new HuffmanNode();
     if(i == 0){
-        int c = readByte(input);
-        if(c != 255) n->character = c;
-        else n->character = PSEUDO_EOF;
+        n->character = readByte(input);
         n->count = 0;
         n->zero = nullptr;
         n->one = nullptr;
@@ -187,6 +176,8 @@ void compress(istream& input, obitstream& output) {
     HuffmanNode* encodingTree = buildEncodingTree(freqTable);
     map<int, string> encodingMap = buildEncodingMap(encodingTree);
 
+    printSideways(encodingTree);
+
     encodeHeader(encodingTree, output);
     input.clear();
     input.seekg(0, ios::beg);
@@ -195,8 +186,8 @@ void compress(istream& input, obitstream& output) {
 
 void decompress(ibitstream& input, ostream& output) {
     HuffmanNode* encodingTree = decodeHeader(input);
+    printSideways(encodingTree);
     decodeData(input, encodingTree, output);
-
 }
 
 void freeTree(HuffmanNode* node) {

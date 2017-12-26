@@ -23,6 +23,6 @@ Hero* Hero::clone() const{
     return new Hero(this);
 }
 
-void moveTowards(const Unit& u){
+void moveTowards(const Point& u){
     Unit::moveTowards(u);
 }

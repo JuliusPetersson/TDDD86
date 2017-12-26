@@ -20,7 +20,7 @@ public:
     bool attacks(const Unit& u) const override;
     void draw(QGraphicsScene *scene) const override;
     Hero* clone() const override;
-    void moveTowards(const Unit& u);
+    void moveTowards(const Point& u);
 };
 
 #endif // HERO_H

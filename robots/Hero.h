@@ -12,7 +12,7 @@
 class Hero : public Unit {
 public:
     Hero();
-    Hero(Unit& u);
+    Hero(Point& u);
 
     /*
     * Draws this hero onto the given QGraphicsScene.

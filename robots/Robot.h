@@ -12,7 +12,7 @@
 class Robot : public Unit {
 public:
     Robot();
-    Robot(Unit* c);
+    Robot(Point& c);
     void draw(QGraphicsScene* scene) const;
     virtual bool isJunk() const;
 
